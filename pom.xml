@@ -98,7 +98,7 @@
                     <productVersion>${jira.version}</productVersion>
                     <productDataVersion>${jira.version}</productDataVersion>
                     <enableQuickReload>true</enableQuickReload>
-                    <productDataPath>${basedir}/src/test/resources/generated-test-resources.zip</productDataPath>
+                    <!--<productDataPath>${basedir}/src/test/resources/generated-test-resources.zip</productDataPath>-->
                     <allowGoogleTracking>false</allowGoogleTracking>
                     <pluginArtifacts>
                         <pluginArtifact>
