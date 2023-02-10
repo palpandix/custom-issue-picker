@@ -146,8 +146,6 @@
         <description>Service for AO entity functions.</description>
         <interface>com.intel.jira.plugins.jqlissuepicker.ao.EntityService</interface>
     </component>
-    <component key="issuePickerLicensingHelper" name="Licensing Helper"
-               class="com.intel.jira.plugins.jqlissuepicker.util.LicensingHelper"/>
     <component key="cwx-issue-picker-update-listener" public="true"
                class="com.intel.jira.plugins.jqlissuepicker.listeners.IssuePickerUpdateListener">
         <interface>com.atlassian.sal.api.lifecycle.LifecycleAware</interface>

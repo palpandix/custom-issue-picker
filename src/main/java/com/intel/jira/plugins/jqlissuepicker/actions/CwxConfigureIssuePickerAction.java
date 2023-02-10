@@ -22,7 +22,6 @@ import com.intel.jira.plugins.jqlissuepicker.util.Fields;
 import com.intel.jira.plugins.jqlissuepicker.ao.EntityService;
 import com.intel.jira.plugins.jqlissuepicker.ao.dto.FieldMapping;
 import com.intel.jira.plugins.jqlissuepicker.ao.dto.IssuePickerConfig;
-import com.intel.jira.plugins.jqlissuepicker.util.LicensingHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,7 +47,6 @@ public class CwxConfigureIssuePickerAction extends JiraWebActionSupport {
     private final transient ProjectManager projectManager;
     private final transient IssueTypeManager issueTypeManager;
     private final transient EntityService entityService;
-    private final transient LicensingHelper licensingHelper;
     private final transient I18nHelper i18n;
     private String action;
     private String customFieldId;
@@ -83,27 +81,21 @@ public class CwxConfigureIssuePickerAction extends JiraWebActionSupport {
     private String initFieldMapping;
     private String copyFieldMapping;
 
-    public CwxConfigureIssuePickerAction(CustomFieldManager customFieldManager, IssueLinkTypeManager issueLinkTypeManager, ProjectManager projectManager, IssueTypeManager issueTypeManager, EntityService entityService, LicensingHelper licensingHelper, I18nHelper i18n) {
+    public CwxConfigureIssuePickerAction(CustomFieldManager customFieldManager, IssueLinkTypeManager issueLinkTypeManager, ProjectManager projectManager, IssueTypeManager issueTypeManager, EntityService entityService, I18nHelper i18n) {
         this.customFieldManager = customFieldManager;
         this.issueLinkTypeManager = issueLinkTypeManager;
         this.projectManager = projectManager;
         this.issueTypeManager = issueTypeManager;
         this.entityService = entityService;
-        this.licensingHelper = licensingHelper;
         this.i18n = i18n;
     }
 
     public String execute() throws Exception {
         String nextPage = "input";
-        boolean licensed = this.licensingHelper.isLicensed();
-        if (StringUtils.equals(this.getAction(), "save") && licensed) {
+        if (StringUtils.equals(this.getAction(), "save")) {
             this.saveValues();
             nextPage = this.returnCompleteWithInlineRedirect("ConfigureCustomField!default.jspa?customFieldId=" + this.getCustomFieldId());
         } else {
-            if (!licensed) {
-                this.addErrorMessage(this.i18n.getText("cwx.issue-picker.error.unlicensed"));
-            }
-
             this.loadValues();
         }
 

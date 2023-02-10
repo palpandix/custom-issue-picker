@@ -6,7 +6,6 @@ import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.util.I18nHelper;
 import com.atlassian.jira.web.action.JiraWebActionSupport;
 import com.atlassian.sal.api.websudo.WebSudoRequired;
-import com.intel.jira.plugins.jqlissuepicker.util.LicensingHelper;
 import com.intel.jira.plugins.jqlissuepicker.util.NumberFormatter;
 import com.intel.jira.plugins.jqlissuepicker.ao.EntityService;
 
@@ -33,45 +32,36 @@ public class IssuePickerFormatSettingsAction extends JiraWebActionSupport {
     private static final double EXAMPLE_NUMBER = 1234.56;
     private final transient CustomFieldManager customFieldManager;
     private final transient EntityService entityService;
-    private final transient LicensingHelper licensingHelper;
     private String cmd;
     private String error;
     private String defaultNumberFormat;
     private String field;
     private String format;
 
-    public IssuePickerFormatSettingsAction(CustomFieldManager customFieldManager, EntityService entityService, LicensingHelper licensingHelper) {
+    public IssuePickerFormatSettingsAction(CustomFieldManager customFieldManager, EntityService entityService) {
         this.customFieldManager = customFieldManager;
         this.entityService = entityService;
-        this.licensingHelper = licensingHelper;
     }
 
     public String execute() throws Exception {
         this.setError((String)null);
-        if (!this.licensingHelper.isLicensed()) {
-            I18nHelper i18n = ComponentAccessor.getJiraAuthenticationContext().getI18nHelper();
-            this.addErrorMessage(i18n.getText("cwx.issue-picker.error.unlicensed"));
-            this.setDefaultNumberFormat(this.convertSeparators(this.entityService.getNumberFormat((String)null)));
-            return "input";
-        } else {
-            if (StringUtils.equals(this.getCmd(), "saveDefaultNumberFormat")) {
-                LOG.debug("saving default number format: {}", this.getDefaultNumberFormat());
-                this.entityService.saveNumberFormat((String)null, this.convertSeparators(this.getDefaultNumberFormat()));
-            } else if (StringUtils.equals(this.getCmd(), "save")) {
-                LOG.debug("saving format for field {}", this.getField());
-                this.entityService.saveNumberFormat(this.getField(), this.convertSeparators(this.getFormat()));
-                this.setField((String)null);
-                this.setFormat((String)null);
-            } else if (StringUtils.equals(this.getCmd(), "edit")) {
-                LOG.debug("editing format for field {}", this.getField());
-            } else if (StringUtils.equals(this.getCmd(), "delete")) {
-                LOG.debug("deleting format for field {}", this.getField());
-                this.entityService.deleteNumberFormat(this.getField());
-            }
-
-            this.setDefaultNumberFormat(this.convertSeparators(this.entityService.getNumberFormat((String)null)));
-            return "input";
+        if (StringUtils.equals(this.getCmd(), "saveDefaultNumberFormat")) {
+            LOG.debug("saving default number format: {}", this.getDefaultNumberFormat());
+            this.entityService.saveNumberFormat((String)null, this.convertSeparators(this.getDefaultNumberFormat()));
+        } else if (StringUtils.equals(this.getCmd(), "save")) {
+            LOG.debug("saving format for field {}", this.getField());
+            this.entityService.saveNumberFormat(this.getField(), this.convertSeparators(this.getFormat()));
+            this.setField((String)null);
+            this.setFormat((String)null);
+        } else if (StringUtils.equals(this.getCmd(), "edit")) {
+            LOG.debug("editing format for field {}", this.getField());
+        } else if (StringUtils.equals(this.getCmd(), "delete")) {
+            LOG.debug("deleting format for field {}", this.getField());
+            this.entityService.deleteNumberFormat(this.getField());
         }
+
+        this.setDefaultNumberFormat(this.convertSeparators(this.entityService.getNumberFormat((String)null)));
+        return "input";
     }
 
     public String getCmd() {

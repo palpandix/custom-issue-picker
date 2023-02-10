@@ -6,7 +6,6 @@ import com.atlassian.jira.web.action.JiraWebActionSupport;
 import com.atlassian.sal.api.websudo.WebSudoRequired;
 import com.intel.jira.plugins.jqlissuepicker.ao.EntityService;
 import com.intel.jira.plugins.jqlissuepicker.ao.dto.FieldMapping;
-import com.intel.jira.plugins.jqlissuepicker.util.LicensingHelper;
 
 import java.util.List;
 
@@ -19,43 +18,36 @@ public class IssuePickerFieldMappingAction extends JiraWebActionSupport {
     private static final long serialVersionUID = 1L;
     private static final Logger LOG = LoggerFactory.getLogger(IssuePickerFieldMappingAction.class);
     private final transient EntityService entityService;
-    private final transient LicensingHelper licensingHelper;
     private String cmd;
     private String error;
     private int fieldMappingId;
     private String fieldName;
     private String fieldDescription;
 
-    public IssuePickerFieldMappingAction(EntityService entityService, LicensingHelper licensingHelper) {
+    public IssuePickerFieldMappingAction(EntityService entityService) {
         this.entityService = entityService;
-        this.licensingHelper = licensingHelper;
     }
 
     public String execute() throws Exception {
         this.setError((String)null);
-        if (!this.licensingHelper.isLicensed()) {
-            I18nHelper i18n = ComponentAccessor.getJiraAuthenticationContext().getI18nHelper();
-            this.addErrorMessage(i18n.getText("cwx.issue-picker.error.unlicensed"));
-            return "input";
-        } else {
-            if (StringUtils.equals(this.getCmd(), "save")) {
-                LOG.debug("saving field mapping for {}", this.getFieldMappingId());
-                this.entityService.createOrUpdateFieldMapping(this.getFieldMappingId(), this.getFieldName(), this.getFieldDescription());
-                this.setFieldMappingId(0);
-                this.setFieldName((String)null);
-                this.setFieldDescription((String)null);
-            } else if (StringUtils.equals(this.getCmd(), "edit")) {
-                LOG.debug("editing field mapping for {}", this.getFieldMappingId());
-                FieldMapping editFieldMapping = this.entityService.getFieldMapping(this.getFieldMappingId());
-                this.setFieldName(editFieldMapping.getName());
-                this.setFieldDescription(editFieldMapping.getDescription());
-            } else if (StringUtils.equals(this.getCmd(), "delete")) {
-                LOG.debug("deleting field mapping for {}", this.getFieldMappingId());
-                this.entityService.deleteFieldMapping(this.getFieldMappingId());
-            }
-
-            return "input";
+        
+        if (StringUtils.equals(this.getCmd(), "save")) {
+            LOG.debug("saving field mapping for {}", this.getFieldMappingId());
+            this.entityService.createOrUpdateFieldMapping(this.getFieldMappingId(), this.getFieldName(), this.getFieldDescription());
+            this.setFieldMappingId(0);
+            this.setFieldName((String)null);
+            this.setFieldDescription((String)null);
+        } else if (StringUtils.equals(this.getCmd(), "edit")) {
+            LOG.debug("editing field mapping for {}", this.getFieldMappingId());
+            FieldMapping editFieldMapping = this.entityService.getFieldMapping(this.getFieldMappingId());
+            this.setFieldName(editFieldMapping.getName());
+            this.setFieldDescription(editFieldMapping.getDescription());
+        } else if (StringUtils.equals(this.getCmd(), "delete")) {
+            LOG.debug("deleting field mapping for {}", this.getFieldMappingId());
+            this.entityService.deleteFieldMapping(this.getFieldMappingId());
         }
+
+        return "input";
     }
 
     public List<FieldMapping> getFieldMappingList() {

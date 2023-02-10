@@ -32,7 +32,6 @@ import com.intel.jira.plugins.jqlissuepicker.ao.dto.IssuePickerConfig;
 import com.intel.jira.plugins.jqlissuepicker.customfields.config.IssuePickerConfigItem;
 import com.intel.jira.plugins.jqlissuepicker.data.SelectionMode;
 import com.intel.jira.plugins.jqlissuepicker.ao.EntityService;
-import com.intel.jira.plugins.jqlissuepicker.util.LicensingHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -73,10 +72,9 @@ public class IssuePickerCFType extends GenericTextCFType implements GroupSelecto
     private final VelocityManager velocityManager;
     private final EntityService entityService;
     private final IssuePickerVelocityProvider velocityProvider;
-    private final LicensingHelper licensingHelper;
     private final I18nHelper i18n;
 
-    public IssuePickerCFType(CustomFieldValuePersister customFieldValuePersister, GenericConfigManager genericConfigManager, TextFieldCharacterLengthValidator textFieldCharacterLengthValidator, JiraAuthenticationContext jiraAuthenticationContext, CustomFieldManager customFieldManager, IssueLinkTypeManager issueLinkTypeManager, IssueManager issueManager, ProjectManager projectManager, IssueTypeManager issueTypeManager, VelocityManager velocityManager, EntityService entityService, IssuePickerVelocityProvider velocityProvider, LicensingHelper licensingHelper) {
+    public IssuePickerCFType(CustomFieldValuePersister customFieldValuePersister, GenericConfigManager genericConfigManager, TextFieldCharacterLengthValidator textFieldCharacterLengthValidator, JiraAuthenticationContext jiraAuthenticationContext, CustomFieldManager customFieldManager, IssueLinkTypeManager issueLinkTypeManager, IssueManager issueManager, ProjectManager projectManager, IssueTypeManager issueTypeManager, VelocityManager velocityManager, EntityService entityService, IssuePickerVelocityProvider velocityProvider) {
         super(customFieldValuePersister, genericConfigManager, textFieldCharacterLengthValidator, jiraAuthenticationContext);
         this.textFieldCharacterLengthValidator = textFieldCharacterLengthValidator;
         this.customFieldManager = customFieldManager;
@@ -87,7 +85,6 @@ public class IssuePickerCFType extends GenericTextCFType implements GroupSelecto
         this.velocityManager = velocityManager;
         this.entityService = entityService;
         this.velocityProvider = velocityProvider;
-        this.licensingHelper = licensingHelper;
         this.i18n = ComponentAccessor.getJiraAuthenticationContext().getI18nHelper();
     }
 
@@ -118,10 +115,7 @@ public class IssuePickerCFType extends GenericTextCFType implements GroupSelecto
             params.put("issueId", issue.getId());
             params.put("currentProjectId", issue.getProjectId());
             params.put("currentIssueTypeId", issue.getIssueTypeId());
-            if (!this.licensingHelper.isLicensed()) {
-                params.put("unlicensed", this.i18n.getText("cwx.issue-picker.error.unlicensed"));
-            }
-
+            
             FieldConfig fieldConfig = field.getRelevantConfig(issue);
             params.put("cfConfigId", fieldConfig.getId());
             IssuePickerConfig config = fieldConfig == null ? null : this.entityService.loadIssuePickerConfig(fieldConfig.getId());

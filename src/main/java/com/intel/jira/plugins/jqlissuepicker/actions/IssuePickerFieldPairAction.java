@@ -10,7 +10,6 @@ import com.atlassian.sal.api.websudo.WebSudoRequired;
 import com.intel.jira.plugins.jqlissuepicker.ao.dto.FieldMapping;
 import com.intel.jira.plugins.jqlissuepicker.ao.dto.FieldPair;
 import com.intel.jira.plugins.jqlissuepicker.util.Fields;
-import com.intel.jira.plugins.jqlissuepicker.util.LicensingHelper;
 import com.intel.jira.plugins.jqlissuepicker.ao.EntityService;
 
 import java.util.ArrayList;
@@ -27,7 +26,6 @@ public class IssuePickerFieldPairAction extends JiraWebActionSupport {
     private static final long serialVersionUID = 1L;
     private static final Logger LOG = LoggerFactory.getLogger(IssuePickerFieldPairAction.class);
     private final transient EntityService entityService;
-    private final transient LicensingHelper licensingHelper;
     private final transient FieldManager fieldManager;
     private final transient CustomFieldManager customFieldManager;
     private final transient I18nHelper i18n;
@@ -39,9 +37,8 @@ public class IssuePickerFieldPairAction extends JiraWebActionSupport {
     private String toField;
     private int fieldPairId;
 
-    public IssuePickerFieldPairAction(EntityService entityService, LicensingHelper licensingHelper, FieldManager fieldManager, CustomFieldManager customFieldManager, I18nHelper i18n) {
+    public IssuePickerFieldPairAction(EntityService entityService, FieldManager fieldManager, CustomFieldManager customFieldManager, I18nHelper i18n) {
         this.entityService = entityService;
-        this.licensingHelper = licensingHelper;
         this.fieldManager = fieldManager;
         this.customFieldManager = customFieldManager;
         this.i18n = i18n;
@@ -49,31 +46,27 @@ public class IssuePickerFieldPairAction extends JiraWebActionSupport {
 
     public String execute() throws Exception {
         this.setError((String)null);
-        if (!this.licensingHelper.isLicensed()) {
-            this.addErrorMessage(this.i18n.getText("cwx.issue-picker.error.unlicensed"));
-            return "input";
-        } else {
-            FieldMapping feildMapping = this.entityService.getFieldMapping(this.getFieldMappingId());
-            this.setFieldMappingId(feildMapping.getId());
-            this.setFieldMappingName(feildMapping.getName());
-            if (StringUtils.equals(this.getCmd(), "save")) {
-                LOG.debug("saving field pair for field mapping {}", this.getFieldMappingId());
-                this.entityService.createOrUpdateFieldPair(this.getFieldPairId(), this.getFieldMappingId(), this.getFromField(), this.getToField());
-                this.setFieldPairId(0);
-                this.setFromField((String)null);
-                this.setToField((String)null);
-            } else if (StringUtils.equals(this.getCmd(), "edit")) {
-                LOG.debug("editing field pair for field mapping {}", this.getFieldMappingId());
-                FieldPair editFieldPair = this.entityService.getFieldPair(this.getFieldPairId());
-                this.setFromField(editFieldPair.getFromField());
-                this.setToField(editFieldPair.getToField());
-            } else if (StringUtils.equals(this.getCmd(), "delete")) {
-                LOG.debug("deleting field pair for field mapping {}", this.getFieldMappingId());
-                this.entityService.deleteFielPair(this.getFieldPairId());
-            }
-
-            return "input";
+        FieldMapping feildMapping = this.entityService.getFieldMapping(this.getFieldMappingId());
+        this.setFieldMappingId(feildMapping.getId());
+        this.setFieldMappingName(feildMapping.getName());
+        if (StringUtils.equals(this.getCmd(), "save")) {
+            LOG.debug("saving field pair for field mapping {}", this.getFieldMappingId());
+            this.entityService.createOrUpdateFieldPair(this.getFieldPairId(), this.getFieldMappingId(), this.getFromField(), this.getToField());
+            this.setFieldPairId(0);
+            this.setFromField((String)null);
+            this.setToField((String)null);
+        } else if (StringUtils.equals(this.getCmd(), "edit")) {
+            LOG.debug("editing field pair for field mapping {}", this.getFieldMappingId());
+            FieldPair editFieldPair = this.entityService.getFieldPair(this.getFieldPairId());
+            this.setFromField(editFieldPair.getFromField());
+            this.setToField(editFieldPair.getToField());
+        } else if (StringUtils.equals(this.getCmd(), "delete")) {
+            LOG.debug("deleting field pair for field mapping {}", this.getFieldMappingId());
+            this.entityService.deleteFielPair(this.getFieldPairId());
         }
+
+        return "input";
+        
     }
 
     public List<FieldInfo> getListNavigableFields() {
