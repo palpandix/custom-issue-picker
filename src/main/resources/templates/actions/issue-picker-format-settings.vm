@@ -1,0 +1,86 @@
+<html>
+    <head>
+        #set($title = $i18n.getText("cwx.issue-picker.format-settings.title"))
+        #set($actionTarget = "IssuePickerFormatSettings.jspa")
+        <title>$title</title>
+        <meta charset="utf-8" />
+        <meta name="decorator" content="atl.admin" />
+        <meta name="admin.active.tab" content="cwx-issue-picker-format-config"/>
+        <meta name="admin.active.section" content="admin_plugins_menu/cwx-issue-picker-config-section">
+        $webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
+    </head>
+    <body>
+        <h1>$title</h1>
+        <p>$i18n.getText("cwx.issue-picker.format-settings.description")</p>
+        #if($errorMessages.size() > 0)
+            <div class="aui-message error">
+            <span class="aui-icon icon-error"></span>
+            #foreach ($errorMessage in $errorMessages)
+                #set($errorHtml = $errorMessage)
+                <p>
+                $errorHtml
+                </p>
+            #end
+            </div>
+        #end
+        <form action="$actionTarget" method="post" class="aui">
+            <div class="field-group">
+                <label for="defaultNumberFormat">$i18n.getText("cwx.issue-picker.format-settings.defaultNumberFormat")</label>
+                <input class="text medium-field" type="text"
+                    id="defaultNumberFormat" name="defaultNumberFormat" value="$!defaultNumberFormat">
+                <div class="description">$i18n.getText("cwx.issue-picker.format-settings.example"): ${action.formatExample(null)}</div>
+            </div>
+            <div class="field-group">
+                <div class="buttons">
+                    <button name="cmd" value="saveDefaultNumberFormat" class="aui-button aui-button-primary"
+                        >$i18n.getText("cwx.issue-picker.save")</button>
+                </div>
+            </div>
+        </form>
+        #if(!$fieldFormats.isEmpty())
+            <table class="aui">
+                <thead>
+                    <tr>
+                        <th>$i18n.getText("cwx.issue-picker.format-settings.field")</th>
+                        <th>$i18n.getText("cwx.issue-picker.format-settings.format")</th>
+                        <th>$i18n.getText("cwx.issue-picker.format-settings.example")</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    #foreach($fieldFormat in $fieldFormats)
+                        <tr>
+                            <td>$fieldFormat.name</td>
+                            <td>$fieldFormat.format</td>
+                            <td>${action.formatExample($fieldFormat.fieldId)}</td>
+                            <td class="action">
+                                <ul class="menu">
+                                    <li><a href="?cmd=edit&field=$fieldFormat.fieldId&format=$action.escape($fieldFormat.format)#edit"
+                                        >$i18n.getText("cwx.issue-picker.edit")</a></li>
+                                    <li><a href="?cmd=delete&field=$fieldFormat.fieldId"
+                                        >$i18n.getText("cwx.issue-picker.delete")</a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    #end
+                </tbody>
+            </table>
+        #end
+        <form id="edit" action="$actionTarget" method="post" class="aui">
+            <div class="field-group">
+                <label for="field">$i18n.getText("cwx.issue-picker.format-settings.field")</label>
+                #selectMapSelected("field" $customFields $field)
+            </div>
+            <div class="field-group">
+                <label for="format">$i18n.getText("cwx.issue-picker.format-settings.format")</label>
+                <input class="text medium-field" type="text" name="format" value="$!format">
+            </div>
+            <div class="field-group">
+                <div class="buttons">
+                    <button name="cmd" value="save" class="aui-button aui-button-primary"
+                        >#if($!cmd == "edit")$i18n.getText("cwx.issue-picker.save")#else $i18n.getText("cwx.issue-picker.add")#end</button>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>

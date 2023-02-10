@@ -1,0 +1,67 @@
+.cwx-aui-text {
+	padding: 5px 0 0 0;
+}
+span.cwx-sigma {
+	font-size: 18px;
+}
+table.aui > tfoot.cwx-footer > tr > td {
+	border-top-width: 2px;
+}
+/* center 'remove' button in select2 */
+.cwx-select a.select2-choice abbr {
+	top: 10px;
+	bottom: -4px;
+}
+
+/* override select2 settings in service desk */
+form.aui .jsd-issue-picker.aui-select2-container {
+    max-width: 100%;
+}
+.cwx-select.aui-select2-container .select2-choices .select2-search-choice {
+    padding: 1px 18px 1px 5px;
+    margin: 1px 5px 1px 0;
+    line-height: 1;
+}
+.cwx-select.aui-select2-container .select2-choices .select2-search-field input {
+    padding: 0;
+}
+/* move the [x] button only for multi-picker */
+.cwx-multi-select.aui-select2-container .select2-search-choice-close {
+    position: absolute;
+    left: auto;
+    right: 5px;
+    top: 4px;
+}
+
+.cwxip-popup-trigger {
+    position: relative;
+    vertical-align: top;
+    top: 5px;
+}
+/* necessary in chrome to make sure icon is within parent */
+.cwxip-popup-trigger .aui-icon {
+    position: static;
+}
+.cwxip-popup {
+    height: 80%;
+}
+.cwxip-check-column {
+    width: 20px;
+}
+.cwxip-popup-search {
+    margin-left: 10px;
+}
+#cwxip-spinner {
+    position: relative;
+    bottom: 15px;
+}
+
+.cwx-deleted {
+	text-decoration: line-through;
+}
+
+table.aui > thead > tr > td.cwx-right-align,
+table.aui > tbody > tr > td.cwx-right-align,
+table.aui > tfoot > tr > td.cwx-right-align {
+	text-align: right;
+}

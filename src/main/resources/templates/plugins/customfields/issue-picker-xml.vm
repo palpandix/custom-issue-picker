@@ -1,0 +1,16 @@
+#parse("templates/plugins/customfields/issue-picker-macros.vm")
+
+#if($ipConfig)
+    #if(!$cwxip.fieldInfos || $cwxip.fieldInfos.isEmpty() || $cwxip.selectedIssueKeys.isEmpty())
+        <customfieldvalue>
+            #set($issuesHtml = $xmlutils.escape("#plainissues($cwxip.issueInfos)"))
+            $issuesHtml
+        </customfieldvalue>
+    #else
+        <customfieldvalue>
+            ## escape HTML-rendered table, so it will appear fine e.g. in Confluence
+            #set($tableHtml = $xmlutils.escape("#cwxtable($customField.id $!cwxip.displayFieldName $cwxip.fieldInfos $cwxip.issueInfos $cwxip.sumsByFieldId)"))
+            $tableHtml
+        </customfieldvalue>
+    #end
+#end

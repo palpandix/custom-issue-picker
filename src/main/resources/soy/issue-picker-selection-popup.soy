@@ -1,0 +1,49 @@
+{namespace Cwx.IssuePicker}
+
+/**
+ * Create a selection popup.
+ */
+{template .createSelectionPopup}
+    <section role="dialog" id="cwx-issue-picker-popup"
+            class="aui-layer aui-dialog2 aui-dialog2-large cwxip-popup" aria-hidden="true"
+            data-aui-remove-on-hide="true">
+        <header class="aui-dialog2-header">
+            <h2 class="aui-dialog2-header-main">{getText('cwx.issue-picker.popup.select-issues')}</h2>
+            <a class="aui-dialog2-header-close">
+                <span class="aui-icon aui-icon-small aui-iconfont-close-dialog">{getText('cwx.issue-picker.popup.close')}</span>
+            </a>
+        </header>
+        <div class="aui-dialog2-content">
+            <form class="aui">
+                <input type="text" class="text cwxip-popup-search-text">
+                <button type="button" class="aui-button cwxip-popup-search">
+                    <span class="aui-icon aui-icon-small aui-iconfont-search"></span>
+                    &nbsp;{getText('cwx.issue-picker.popup.search')}
+                </button>
+                <div id="cwxip-spinner"></div>
+            </form>
+            <form class="aui">
+                <button type="button" class="aui-button cwxip-popup-select-all">
+                    {getText('cwx.issue-picker.popup.select-all')}
+                </button>
+                <button type="button" class="aui-button cwxip-popup-deselect-all">
+                    {getText('cwx.issue-picker.popup.deselect-all')}
+                </button>
+                <button type="button" class="aui-button cwxip-popup-invert-selection">
+                    <span class="aui-icon aui-icon-small aui-iconfont-refresh-small"></span>
+                    &nbsp;{getText('cwx.issue-picker.popup.invert-selection')}
+                </button>
+            </form>
+            <table class="aui cwxip-popup-results-table">
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <footer class="aui-dialog2-footer">
+            <div class="aui-dialog2-footer-actions">
+                <button type="button" class="aui-button cwxip-popup-apply">{getText('cwx.issue-picker.popup.apply')}</button>
+                <button type="button" class="aui-button aui-button-link cwxip-popup-close">{getText('cwx.issue-picker.popup.close')}</button>
+            </div>
+        </footer>
+    </section>
+{/template}

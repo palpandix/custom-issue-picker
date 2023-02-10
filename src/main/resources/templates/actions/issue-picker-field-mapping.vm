@@ -1,0 +1,73 @@
+<html>
+    <head>
+        #set($title = $i18n.getText("cwx.issue-picker.field-mapping.title"))
+        #set($actionTarget = "IssuePickerFieldMapping.jspa")
+        <title>$title</title>
+        <meta charset="utf-8" />
+        <meta name="decorator" content="atl.admin" />
+        <meta name="admin.active.tab" content="cwx-issue-picker-field-mapping"/>
+        <meta name="admin.active.section" content="admin_plugins_menu/cwx-issue-picker-config-section">
+        $webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
+        $webResourceManager.requireResourcesForContext("issue-picker-field-mapping")
+    </head>
+    <body>
+        <h1>$title</h1>
+        <p>$i18n.getText("cwx.issue-picker.field-mapping.page.description")</p>
+        #if($errorMessages.size() > 0)
+            <div class="aui-message error">
+            <span class="aui-icon icon-error"></span>
+            #foreach ($errorMessage in $errorMessages)
+                #set($errorHtml = $errorMessage)
+                <p>
+                $errorHtml
+                </p>
+            #end
+            </div>
+        #end
+          <table class="aui">
+              <thead>
+                    <tr>
+                        <th>$i18n.getText("cwx.issue-picker.field-mapping.name")</th>
+                        <th>$i18n.getText("cwx.issue-picker.field-mapping.description")</th>
+                        <th></th>
+                    </tr>
+              </thead>
+              <tbody>
+                 #foreach($fieldMapping in $fieldMappingList)
+                      <tr #if($fieldMappingId == $fieldMapping.id)class="selected-row"#end>
+                          <td>$i18n.getText($fieldMapping.name)</td>
+                          <td>$i18n.getText($fieldMapping.description)</td>
+                          <td class="action">
+                                <ul class="menu">
+                                    <li><a href="?cmd=edit&fieldMappingId=$fieldMapping.id"
+                                        >$i18n.getText("cwx.issue-picker.edit")</a></li>
+                                    <li><a href="${req.contextPath}/secure/admin/IssuePickerFieldPair.jspa?fieldMappingId=$fieldMapping.id"
+                                        >$i18n.getText("cwx.issue-picker.configuration")</a></li>
+                                    <li><a href="?cmd=delete&fieldMappingId=$fieldMapping.id"
+                                        >$i18n.getText("cwx.issue-picker.delete")</a></li>
+                                </ul>
+                           </td>
+                      </tr>
+                 #end
+             </tbody>
+         </table>
+
+         <form id="edit" action="$actionTarget" method="post" class="aui">
+            <div class="field-group">
+                <input  type="hidden" name="fieldMappingId" value="$!fieldMappingId">
+                <label for="format">$i18n.getText("cwx.issue-picker.field-mapping.name")</label>
+                <input class="text medium-field" type="text" name="fieldName" value="$!fieldName">
+            </div>
+            <div class="field-group">
+                <label for="format">$i18n.getText("cwx.issue-picker.field-mapping.description")</label>
+                <input class="text long-field" type="text" name="fieldDescription" value="$!fieldDescription">
+            </div>
+            <div class="field-group">
+                <div class="buttons">
+                    <button name="cmd" value="save" class="aui-button aui-button-primary"
+                        >#if($!cmd == "edit")$i18n.getText("cwx.issue-picker.save")#else $i18n.getText("cwx.issue-picker.add")#end</button>
+                </div>
+            </div>
+         </form>
+    </body>
+</html>

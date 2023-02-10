@@ -1,0 +1,35 @@
+#parse("templates/plugins/customfields/issue-picker-macros.vm")
+
+#if($showNothingInView)
+## show absolutely nothing
+#elseif($ipConfig)
+    #if($unlicensed)
+        <div class="aui-message aui-message-error">
+            <span class="aui-icon icon-error"></span>
+            <p>$unlicensed</p>
+        </div>
+    #end
+    #if(!$cwxip.fieldInfos || $cwxip.fieldInfos.isEmpty() || $cwxip.selectedIssueKeys.isEmpty())
+        #searchlink($cwxip.jqlLink)
+        #plainissues($cwxip.issueInfos)
+    #else
+        <div id="field-${customField.id}" class="twixi-block#if($ipConfig.expandIssueTable) expanded #else collapsed#end">
+            <div class="twixi-wrap concise">
+                <a href="#" class="twixi"><span class="icon twixi-closed"><span>Show</span></span></a>
+                <div class="flooded">
+                    #searchlink($cwxip.jqlLink)
+                    #plainissues($cwxip.issueInfos)
+                </div>
+            </div>
+            <div class="twixi-wrap verbose">
+                <a href="#" class="twixi"><span class="icon twixi-opened"><span>Hide</span></span></a>
+                <div class="flooded">
+                    #searchlink($cwxip.jqlLink)
+                    #cwxtable(${customField.id} $!cwxip.displayFieldName $cwxip.fieldInfos $cwxip.issueInfos $cwxip.sumsByFieldId)
+                </div>
+            </div>
+        </div>
+    #end
+#else
+    $i18n.getText("cwx.issue-picker.unconfigured", "$baseurl", "$customField.idAsLong")
+#end

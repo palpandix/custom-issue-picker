@@ -1,0 +1,14 @@
+form.aui div.field-group.cwx-radio-field-group {
+	padding: 4px 0 0 20px;
+}
+form.aui div.field-group.cwx-radio-field-group > fieldset {
+	padding-top: 4px;
+}
+
+div.aui-select2-container.select.select2-container.select2-container-disabled.select2-container-multi ul.select2-choices{
+	background-color: #f4f5f7;
+}
+
+div.aui-select2-container.select.select2-container.select2-container-disabled.select2-container-multi ul.select2-choices:hover{
+	cursor: not-allowed;
+}

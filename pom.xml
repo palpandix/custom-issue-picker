@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.intel.jira.plugins</groupId>
+    <artifactId>custom-issue-picker</artifactId>
+    <version>7.2.8.2</version>
+
+    <organization>
+        <name>Intel Company</name>
+        <url>http://www.intel.com/</url>
+    </organization>
+
+    <name>cwx-issue-picker</name>
+    <description>This is the com.intel.jira.plugins:custom-issue-picker plugin for Atlassian JIRA.</description>
+    <packaging>atlassian-plugin</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.atlassian.jira</groupId>
+            <artifactId>jira-core</artifactId>
+            <version>${jira.version}</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>jndi</groupId>
+                    <artifactId>jndi</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jta</artifactId>
+                    <groupId>jta</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>javax.ws.rs</groupId>
+            <artifactId>jsr311-api</artifactId>
+            <version>1.1.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.activeobjects</groupId>
+            <artifactId>activeobjects-plugin</artifactId>
+            <version>${ao.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- For Service Desk integration -->
+        <dependency>
+            <groupId>org.springframework.osgi</groupId>
+            <artifactId>spring-osgi-extender</artifactId>
+            <version>1.2.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.pocketknife</groupId>
+            <artifactId>atlassian-pocketknife-api-commons</artifactId>
+            <version>1.0.7</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.servicedesk</groupId>
+            <artifactId>jira-servicedesk-api</artifactId>
+            <version>${jsd.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- For licensing -->
+        <dependency>
+            <groupId>com.atlassian.upm</groupId>
+            <artifactId>licensing-api</artifactId>
+            <version>${upm.license.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.atlassian.upm</groupId>
+            <artifactId>upm-api</artifactId>
+            <version>${upm.license.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.atlassian.soy</groupId>
+            <artifactId>soy-template-renderer-api</artifactId>
+            <version>6.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.atlassian.maven.plugins</groupId>
+                <artifactId>jira-maven-plugin</artifactId>
+                <version>${amps.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <productVersion>${jira.version}</productVersion>
+                    <productDataVersion>${jira.version}</productDataVersion>
+                    <enableQuickReload>true</enableQuickReload>
+                    <productDataPath>${basedir}/src/test/resources/generated-test-resources.zip</productDataPath>
+                    <allowGoogleTracking>false</allowGoogleTracking>
+                    <pluginArtifacts>
+                        <pluginArtifact>
+                            <groupId>com.atlassian.activeobjects</groupId>
+                            <artifactId>activeobjects-plugin</artifactId>
+                            <version>${ao.version}</version>
+                        </pluginArtifact>
+                    </pluginArtifacts>
+                    <instructions>
+                        <!-- Specify what package to include. Ensure that any packages from OBRs are also listed. -->
+                        <DynamicImport-Package>
+                            com.atlassian.servicedesk.*,
+                        </DynamicImport-Package>
+                        <CONF_COMM/>
+                    </instructions>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+    <properties>
+        <jira.version>7.2.0</jira.version>
+        <jsd.version>3.2.0-038-01</jsd.version>
+        <ao.version>1.1.5</ao.version>
+        <amps.version>8.0.0</amps.version>
+        <upm.license.version>2.19.1</upm.license.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>atlassian-public</id>
+            <url>https://maven.atlassian.com/repository/public</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+        </pluginRepository>
+    </pluginRepositories>
+    <repositories>
+        <repository>
+            <id>atlassian-public</id>
+            <url>https://maven.atlassian.com/repository/public</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+        </repository>
+    </repositories>
+
+</project>

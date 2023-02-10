@@ -1,0 +1,60 @@
+## Since Jira's customControlFooter only works if the complete VM template runs with escaping disabled,
+## we use our own footer that shows descriptions correctly
+#macro(cwxFooter $action $id $descriptionHtml)
+    #if ($action.getErrors().get($id))
+        <div class="error">$textutils.htmlEncode($action.getErrors().get($id))</div>
+    #end
+    #if ($descriptionHtml && $descriptionHtml != '')
+        <div class="description">$descriptionHtml</div>
+    #end
+    ## closing <div> for the custom field
+    </div>
+#end
+
+#if($ipConfig.selectionMode.name() == "NONE")
+## show nothing in edit-mode
+#elseif($unlicensed)
+    #set($unlicensedHtml = $unlicensed)
+    <div class="aui-message aui-message-error">
+        <span class="aui-icon icon-error"></span>
+        <p>$unlicensedHtml</p>
+    </div>
+    ## include hidden input field, so that field value will not be deleted when issue is saved
+    <input type="hidden" name="${customField.id}" value="$!value">
+#else
+#customControlHeader ($action $customField.id $customField.name $fieldLayoutItem.required $displayParameters $auiparams)
+#if($ipConfig)
+    #if($value && !$value.isEmpty())
+        #set($selected = $value)
+    #end
+    #if ($ipConfig.selectionMode.name() == "SINGLE")
+        #set($multiple = false)
+    #else
+        #set($multiple = true)
+    #end
+    <input type="hidden" class="cwx-select" name="${customField.id}" id="${customField.id}" value="$!value">
+    ## fake input field, so Jira allows inline editing for our field
+    <select class="hidden"></select>
+    <div id="${customField.id}-info" class="hidden" data-issue-id="$!issueId" data-current-project-id="$!currentProjectId"
+        data-current-issue-type-id="$!currentIssueTypeId" data-cf-config-id="$!cfConfigId"
+        #if($multiple)
+            data-multiple="true"
+        #end
+        #if(${ipConfig.createNewValue})
+            data-create-new-field="true"
+        #end
+        #if(${ipConfig.presetValue})
+            data-preset-value="true"
+        #end
+        data-initial-values="$initialValuesJson">
+    </div>
+    #if($ipConfig.selectionMode.name() == "MULTIPLE")
+        <a id="${customField.id}-popup-trigger" class="cwxip-popup-trigger" title="$i18n.getText("cwx.issue-picker.popup.tooltip")">
+            <span class="aui-icon aui-icon-small aui-iconfont-add"></span>
+        </a>
+    #end
+#else
+    <div class="cwx-aui-text">$i18n.getText("cwx.issue-picker.unconfigured", "$baseurl", "$customField.idAsLong")</div>
+#end
+#cwxFooter($action $customField.id $fieldLayoutItem.fieldDescription)
+#end

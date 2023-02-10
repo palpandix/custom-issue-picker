@@ -1,0 +1,139 @@
+$webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
+<html>
+    #set($title = $i18n.getText("cwx.issue-picker.format-help.title"))
+    <head>
+        <title>$title</title>
+        <meta charset="utf-8" />
+        <meta name="decorator" content="popup"/>
+    </head>
+    <body>
+    <header class="aui-page-header">
+        <div class="aui-page-header-inner">
+            <div class="aui-page-header-main">
+                <h1>$title</h1>
+            </div>
+        </div>
+    </header>
+    <div class="aui-page-panel">
+        <div class="aui-page-panel-inner">
+            <section class="aui-page-panel-content">
+                ## no translations here
+
+                <h2>General:</h2>
+                <p>Using a ! after the $ prevents the variable from being printed if it's empty.</p>
+
+                <h2>In the JQL format, you can use the following objects:</h2>
+
+                <table class="confluenceTable">
+                <tbody>
+                    <tr>
+                        <th class="confluenceTh">Object</th>
+                        <th class="confluenceTh">Usage</th>
+                    </tr>
+                    <tr>
+                        <td class="confluenceTd">$issue</td>
+                        <td class="confluenceTd">
+                        <ul class="alternate" type="square">
+                            <li>$issue.summary</li>
+                            <li>$issue.description</li>
+                            <li>$issue.getReporterUser().getDisplayName()</li>
+                            <li>$issue.getFixVersions().iterator().next()</li>
+                            <li>$issue.getIssueTypeObject().getName()</li>
+                            <li>$issue.getProjectObject().getKey()</li>
+                        </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="confluenceTd">$customfield_10500 (all customfields)</td>
+                        <td class="confluenceTd">
+                        <ul class="alternate" type="square">
+                            <li>$issue.getCustomFieldValue($customfield_10500)</li>
+                            <li>$issue.getCustomFieldValue($customfield_10200).getDisplayName()</li>
+                        </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="confluenceTd">$fieldHelper</td>
+                        <td class="confluenceTd">
+                        <ul class="alternate" type="square">
+                            <li>$fieldHelper.getValueAsString("components")</li>
+                            <li>$fieldHelper.getValueAsString("fixVersions")</li>
+                            <li>$fieldHelper.getValueAsString("customfield_10200")</li>
+                            <li>$fieldHelper.getDateOnlyAsString($issue.created)</li>
+                            <li>$fieldHelper.getDateStringWithFormat($issue.created, "yyMMdd")</li>
+                            <li>$fieldHelper.getDateTimeAsString($issue.getCustomFieldValue($customfield_10500))</li>
+                        </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="confluenceTd">$projectHelper</td>
+                        <td class="confluenceTd">
+                        <ul class="alternate" type="square">
+                            <li>$projectHelper.getMetadata("my_datum")</li>
+                        </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="confluenceTd">\$customFieldManager</td>
+                        <td class="confluenceTd"></td>
+                    </tr>
+                    <tr>
+                        <td class="confluenceTd">$stringUtils</td>
+                        <td class="confluenceTd"></td>
+                    </tr>
+                    <tr>
+                        <td class="confluenceTd">$textUtils</td>
+                        <td class="confluenceTd"></td>
+                    </tr>
+                </tbody>
+                </table>
+
+                <div class="aui-message aui-message-warning">
+                    <p class="title">
+                        <strong>Note</strong>
+                    </p>
+                    <p>If you want to use the issue picker on a create screen,
+                    you can only use <b>$issue.getIssueTypeObject().getName()</b>
+                    or <b>$issue.getProjectObject().getKey()</b>. All other fields
+                    cannot be accessed yet, because the issue has not been created yet.</p>
+                </div>
+
+                <h2>How to get the values of standard fields:</h2>
+
+                <table class="confluenceTable">
+                <tbody>
+                    <tr>
+                        <th class="confluenceTh">Field</th>
+                        <th class="confluenceTh">Usage</th>
+                    </tr>
+                    #foreach($standardField in $standardFields.entrySet())
+                    <tr>
+                        <td class="confluenceTd">$standardField.getKey()</td>
+                        <td class="confluenceTd">$standardField.getValue()</td>
+                    </tr>
+                    #end
+                </tbody>
+                </table>
+
+                <h2>How to get the values of any customfield:</h2>
+
+                <table class="confluenceTable">
+                <tbody>
+                    <tr>
+                        <th class="confluenceTh">Customfield</th>
+                        <th class="confluenceTh">Usage</th>
+                    </tr>
+                    #foreach($customField in $customFields.entrySet())
+                    <tr>
+                        <td class="confluenceTd">$customField.getKey()</td>
+                        <td class="confluenceTd">$customField.getValue()</td>
+                    </tr>
+                    #end
+                </tbody>
+                </table>
+
+            </section>
+        </div>
+    </div>
+    </body>
+</html>
