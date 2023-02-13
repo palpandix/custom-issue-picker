@@ -65,3 +65,6 @@ table.aui > tbody > tr > td.ics-right-align,
 table.aui > tfoot > tr > td.ics-right-align {
 	text-align: right;
 }
+.jira-multi-select > .representation .value-item {
+    color: #333333;
+}
