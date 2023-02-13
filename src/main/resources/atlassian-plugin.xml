@@ -7,10 +7,10 @@
         </description>
         <version>7.2.8.2</version>
         <vendor name="intel" url="https://www.intel.com"/>
-        <param name="plugin-icon">logos/plugin-icon.png</param>
-        <param name="plugin-logo">logos/plugin-logo.png</param>
-        <param name="vendor-icon">logos/vendor-icon.png</param>
-        <param name="vendor-logo">logos/vendor-logo.png</param>
+        <param name="plugin-icon">images/plugin-icon.png</param>
+        <param name="plugin-logo">images/plugin-logo.png</param>
+        <param name="vendor-icon">images/vendor-icon.png</param>
+        <param name="vendor-logo">images/vendor-logo.png</param>
         <param name="atlassian-data-center-compatible">true</param>
         <param name="atlassian-data-center-status">compatible</param>
         <param name="plugin-type">both</param>
@@ -116,7 +116,7 @@
                       i18n-name-key="cwx.issue-picker.name"
                       class="com.intel.jira.plugins.jqlissuepicker.customfields.IssuePickerCFType">
         <description key="cwx.issue-picker.description"/>
-        <resource type="download" name="customfieldpreview.png" location="logos/picker.png"/>
+        <resource type="download" name="customfieldpreview.png" location="images/picker.png"/>
         <resource name="view" type="velocity" location="/templates/plugins/customfields/issue-picker-view.vm"/>
         <resource name="edit" type="velocity" location="/templates/plugins/customfields/issue-picker-edit.vm"/>
         <resource name="xml" type="velocity" location="/templates/plugins/customfields/issue-picker-xml.vm"/>
