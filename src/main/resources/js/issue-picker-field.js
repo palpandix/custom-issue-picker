@@ -16,6 +16,7 @@ AJS.toInit(function() {
     function buildQueryIssuePickerFunction(id, issueId, currentProjectId, currentIssueTypeId, cfConfigId, multiple) {
         return function queryIssuePicker(query) {
             searchIssuePicker(id, issueId, currentProjectId, currentIssueTypeId, cfConfigId, query.term, function(result) {
+
                 var data = { results: [] };
                 if (result) {
                     if (! multiple) {
@@ -70,6 +71,7 @@ AJS.toInit(function() {
 
         if (presetValue && !issueId && issueId !== "") {
             // preset single value on create
+
             var initField = function initField(data) {
                 if (data && data.results && data.results.length && data.results.length == 1) {
                     AJS.$('#' + id).auiSelect2('data', data.results[0]);
@@ -81,7 +83,11 @@ AJS.toInit(function() {
             });
             return;
         }
+
         var initialValues = selectInput$.data('initial-values');
+        var initialValues = $.each(initialValues, function(key, value) {
+            initialValues[key].displayName = $(value.displayName).text();
+       });
         resolveSelectedValues(AJS.$('#' + id).val(), initialValues, cfConfigId, function (data) {
             if (!multiple) {
                 if (data && data.length > 0) {
@@ -102,6 +108,7 @@ AJS.toInit(function() {
             callback([]);
             return;
         }
+
         // initial values when editing started
         var initialMap = new Map(_(initialValues).map(function (entry) {
             return [ entry.key, entry.displayName ];
