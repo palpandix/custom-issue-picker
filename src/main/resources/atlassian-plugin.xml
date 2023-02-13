@@ -16,21 +16,21 @@
         <param name="plugin-type">both</param>
         <param name="configure.url">/secure/admin/IssuePickerFormatSettings.jspa</param>
     </plugin-info>
-    <customercontext key="cwx-issuepicker-context" path="/rest/cwx-issuepicker">
+    <!--<customercontext key="cwx-issuepicker-context" path="/rest/cwx-issuepicker">
         <uri regex="/.*"/>
-    </customercontext>
+    </customercontext>-->
     <rest name="Issue Picker REST Resource" key="cwx-issuepicker-rest" path="/cwx-issuepicker" version="1.0">
         <description>Provides functionality for issue picker.</description>
     </rest>
     <resource type="i18n" name="i18n" location="translations/issuepicker"/>
-    <web-resource key="cwx.issue-picker.web-resources-7.2.8.2" name="[cwx] Issue Picker Web Resources">
+    <web-resource key="cwx.issue-picker.web-resources-7.2.8.2" name="Issue Picker Web Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
         <resource type="download" name="cwx-issue-picker.css" location="/css/cwx-issue-picker.css"/>
         <context>jira.general</context>
         <context>atl.general</context>
         <context>atl.admin</context>
     </web-resource>
-    <web-resource key="cwx.issue-picker.field-7.2.8.2" name="[cwx] Issue Picker Field Resources">
+    <web-resource key="cwx.issue-picker.field-7.2.8.2" name=" Issue Picker Field Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
         <dependency>com.atlassian.auiplugin:aui-select2</dependency>
         <dependency>com.atlassian.auiplugin:dialog2</dependency>
@@ -48,7 +48,7 @@
         <context>atl.general</context>
         <context>atl.admin</context>
     </web-resource>
-    <web-resource key="cwx.issue-picker.jsd-field-7.2.8.2" name="[cwx] Issue Picker JSD Field Resources">
+    <web-resource key="cwx.issue-picker.jsd-field-7.2.8.2" name="Issue Picker JSD Field Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
         <dependency>com.atlassian.auiplugin:aui-select2</dependency>
         <transformation extension="js">
@@ -58,14 +58,14 @@
         <resource type="download" name="cwx-issue-picker.css" location="/css/cwx-issue-picker.css"/>
         <context>customerportal</context>
     </web-resource>
-    <web-resource key="cwx.issue-picker.config-7.2.8.2" name="[cwx] Issue Picker Config Resources">
+    <web-resource key="cwx.issue-picker.config-7.2.8.2" name="Issue Picker Config Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
         <dependency>com.atlassian.auiplugin:aui-select2</dependency>
         <resource type="download" name="issue-picker-field-config.js" location="/js/issue-picker-field-config.js"/>
         <resource type="download" name="cwx-issue-picker-config.css" location="/css/cwx-issue-picker-config.css"/>
         <context>issue-picker-field-config</context>
     </web-resource>
-    <web-resource key="cwx.issue-picker.field-mapping-7.2.8.2" name="[cwx] Issue Picker Field Mapping Resources">
+    <web-resource key="cwx.issue-picker.field-mapping-7.2.8.2" name="Issue Picker Field Mapping Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
         <dependency>com.atlassian.auiplugin:aui-select2</dependency>
         <resource type="download" name="cwx-issue-picker-field-mapping.css"
