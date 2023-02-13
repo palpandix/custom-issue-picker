@@ -176,7 +176,7 @@ public class IssuePickerVelocityProvider {
     }
 
     private IssueInfo createdDeletedIssueInfo(String issueKey) {
-        String formattedIssueKey = "<span class=\"cwx-deleted\">" + issueKey + "</span>";
+        String formattedIssueKey = "<span class=\"ics-deleted\">" + issueKey + "</span>";
         String dispalyName = issueKey.startsWith("new-") ? this.newIssueKeyDisplayName(issueKey) : issueKey;
         return new IssueInfo(issueKey, dispalyName, formattedIssueKey, (Map)null, true);
     }

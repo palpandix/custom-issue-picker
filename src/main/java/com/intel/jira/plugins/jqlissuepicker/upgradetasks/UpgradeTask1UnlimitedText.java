@@ -81,6 +81,6 @@ public class UpgradeTask1UnlimitedText implements PluginUpgradeTask {
     }
 
     public String getPluginKey() {
-        return "com.intel.jira.plugins.cwx-issue-picker";
+        return "com.intel.jira.plugins.ics-issue-picker";
     }
 }

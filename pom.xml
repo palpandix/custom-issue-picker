@@ -14,7 +14,7 @@
         <url>http://www.intel.com/</url>
     </organization>
 
-    <name>cwx-issue-picker</name>
+    <name>ics-issue-picker</name>
     <description>This is the com.intel.jira.plugins:custom-issue-picker plugin for Atlassian JIRA.</description>
     <packaging>atlassian-plugin</packaging>
 

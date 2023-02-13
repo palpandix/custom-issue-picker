@@ -72,7 +72,7 @@ public class IssuePickerConfigItem implements FieldConfigItemType {
     }
 
     public String getObjectKey() {
-        return "cwx.issue-picker.config";
+        return "ics.issue-picker.config";
     }
 
     public String getDisplayName() {
@@ -80,7 +80,7 @@ public class IssuePickerConfigItem implements FieldConfigItemType {
     }
 
     public String getDisplayNameKey() {
-        return "cwx.issue-picker.config.name";
+        return "ics.issue-picker.config.name";
     }
 
     public String getViewHtml(FieldConfig fieldConfig, FieldLayoutItem fieldLayoutItem) {
@@ -108,7 +108,7 @@ public class IssuePickerConfigItem implements FieldConfigItemType {
             context.put("indexTableFields", this.renderBoolean(config.getIndexTableFields()));
             context.put("expandIssueTable", this.renderBoolean(config.getExpandIssueTable()));
             context.put("csvExportUseDisplay", this.renderBoolean(config.getCsvExportUseDisplay()));
-            String displayAttribute = this.i18n.getText("cwx.issue-picker.key-only");
+            String displayAttribute = this.i18n.getText("ics.issue-picker.key-only");
             if (StringUtils.isNotBlank(config.getCustomFormat())) {
                 displayAttribute = config.getCustomFormat();
             } else if (StringUtils.isNotBlank(config.getDisplayAttributeFieldId())) {

@@ -1,7 +1,7 @@
 AJS.toInit(function() {
     function searchIssuePicker(id, issueId, currentProjectId, currentIssueTypeId, cfConfigId, queryTerm, resultCallback) {
         var url = AJS.contextPath() +
-            '/rest/cwx-issuepicker/latest/issuepicker/search?customFieldId=' + encodeURIComponent(id);
+            '/rest/ics-issuepicker/latest/issuepicker/search?customFieldId=' + encodeURIComponent(id);
         if (issueId) {
             url += '&issue=' + encodeURIComponent(issueId);
         } else {
@@ -26,7 +26,7 @@ AJS.toInit(function() {
                         data.results.push({ id: entry.key, text: entry.displayName });
                     });
                     if (result.issues.length < result.total) {
-                        var message = AJS.I18n.getText("cwx.issue-picker.more-results", result.issues.length, result.total);
+                        var message = AJS.I18n.getText("ics.issue-picker.more-results", result.issues.length, result.total);
                         data.results.push({ text: message });
                     }
                 }
@@ -59,7 +59,7 @@ AJS.toInit(function() {
             query: queryIssuePicker,
             multiple: multiple,
             dropdownAutoWidth: true,
-            placeholder: AJS.I18n.getText("cwx.issue-picker.none"),
+            placeholder: AJS.I18n.getText("ics.issue-picker.none"),
             containerCssClass: 'long-field'
         });
         AJS.$('#' + id + '-popup-trigger').on('click', function() {
@@ -131,7 +131,7 @@ AJS.toInit(function() {
         } else {
             // perform REST call to resolve issue keys
             var url = AJS.contextPath() +
-                '/rest/cwx-issuepicker/latest/issuepicker/resolve-keys?fieldConfigId=' + fieldConfigId +
+                '/rest/ics-issuepicker/latest/issuepicker/resolve-keys?fieldConfigId=' + fieldConfigId +
                 '&keys=' + encodeURIComponent(unresolvedKeys.join(','));
             AJS.$.get(url).done(function (result) {
                 result.forEach(function (entry) {
@@ -143,7 +143,7 @@ AJS.toInit(function() {
     }
 
     function activateFields() {
-        AJS.$('input.cwx-select').each(function(index, element) {
+        AJS.$('input.ics-select').each(function(index, element) {
             activateSelect(element);
         });
         activateSortableTable();
@@ -167,9 +167,9 @@ AJS.toInit(function() {
 
     function openPopup(id, popupSearch) {
         var backgroundBlanket = AJS.$('.aui-blanket').attr('aria-hidden') === 'false';
-        AJS.$('body').append(Cwx.IssuePicker.createSelectionPopup());
+        AJS.$('body').append(ics.IssuePicker.createSelectionPopup());
 
-        var popup = '#cwx-issue-picker-popup';
+        var popup = '#ics-issue-picker-popup';
         AJS.$(popup).on('keydown', function(e) {
             if (e.key === 'Escape') {
                 AJS.dialog2(popup).hide();
@@ -220,7 +220,7 @@ AJS.toInit(function() {
 
     function performPopupSearch(popupSearch, currentSelection) {
         AJS.$('#cwxip-spinner').spin();
-        var popup = '#cwx-issue-picker-popup';
+        var popup = '#ics-issue-picker-popup';
         var context = AJS.contextPath();
         var selectedOptions = currentSelection.split(',');
         var createTableElement = function createTableElement(issue) {
@@ -252,7 +252,7 @@ AJS.toInit(function() {
                     table$.append(createTableElement(element));
                 });
                 if (data.issues.length < data.total) {
-                    var message = AJS.I18n.getText("cwx.issue-picker.more-results", data.issues.length, data.total);
+                    var message = AJS.I18n.getText("ics.issue-picker.more-results", data.issues.length, data.total);
                     table$.append(AJS.$('<tr><td></td><td>' + message + '</td></tr>'));
                 }
             }
@@ -261,14 +261,14 @@ AJS.toInit(function() {
 
     function popupApply(id) {
         var existingData = AJS.$('#' + id).auiSelect2('data');
-        var newData = AJS.$('#cwx-issue-picker-popup td.cwxip-check-column > input:checked').map(function() {
+        var newData = AJS.$('#ics-issue-picker-popup td.cwxip-check-column > input:checked').map(function() {
             var row$ = AJS.$(this).parents('tr');
             var key = row$.data('id');
             var text = row$.find('a').text();
             return { id: key, text: text };
         }).toArray();
         AJS.$('#' + id).auiSelect2('data', _.union(existingData, newData));
-        AJS.dialog2('#cwx-issue-picker-popup').hide();
+        AJS.dialog2('#ics-issue-picker-popup').hide();
     }
 
     activateFields();

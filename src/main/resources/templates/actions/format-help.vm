@@ -1,6 +1,6 @@
 $webResourceManager.requireResource("com.atlassian.auiplugin:ajs")
 <html>
-    #set($title = $i18n.getText("cwx.issue-picker.format-help.title"))
+    #set($title = $i18n.getText("ics.issue-picker.format-help.title"))
     <head>
         <title>$title</title>
         <meta charset="utf-8" />

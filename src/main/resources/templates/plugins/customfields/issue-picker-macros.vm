@@ -16,7 +16,7 @@
     #if($jqlLink)
         <a href="$jqlLink">
             <span class="aui-icon aui-icon-small aui-iconfont-search"
-                title="$i18n.getText("cwx.issue-picker.search.tooltip")"></span>
+                title="$i18n.getText("ics.issue-picker.search.tooltip")"></span>
         </a>
     #end
 #end
@@ -41,9 +41,9 @@
                             #set($fieldHtml = $!issueInfo.fieldValues.get($fieldInfo.fieldId).htmlValue)
                             #if($fieldInfo.rawSort) 
                                #set($fieldRaw = $!issueInfo.fieldValues.get($fieldInfo.fieldId).rawValue)
-                              <td class="confluenceTd#if($fieldInfo.rightAlign) cwx-right-align#end" data-sort-value="$fieldRaw">
+                              <td class="confluenceTd#if($fieldInfo.rightAlign) ics-right-align#end" data-sort-value="$fieldRaw">
                             #else
-                              <td class="confluenceTd#if($fieldInfo.rightAlign) cwx-right-align#end">
+                              <td class="confluenceTd#if($fieldInfo.rightAlign) ics-right-align#end">
                             #end
                               $!fieldHtml
                             </td>
@@ -53,11 +53,11 @@
             #end
         </tbody>
         #if($sums && !$sums.isEmpty())
-            <tfoot class="cwx-footer">
+            <tfoot class="ics-footer">
                 <tr>
-                    <td class="confluenceTd"><span class="cwx-sigma">&Sigma;</span></td>
+                    <td class="confluenceTd"><span class="ics-sigma">&Sigma;</span></td>
                     #foreach($fieldInfo in $fieldInfos)
-                        <td class="confluenceTd#if($fieldInfo.rightAlign) cwx-right-align#end">
+                        <td class="confluenceTd#if($fieldInfo.rightAlign) ics-right-align#end">
                             #if($sums.containsKey($fieldInfo.fieldId))
                                 $sums.get($fieldInfo.fieldId)
                             #end

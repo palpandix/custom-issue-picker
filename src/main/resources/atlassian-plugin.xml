@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<atlassian-plugin key="com.intel.jira.plugins.cwx-issue-picker" name="Custom Issue Picker for Jira"
+<atlassian-plugin key="com.intel.jira.plugins.ics-issue-picker" name="Custom Issue Picker for Jira"
                   plugins-version="2">
     <plugin-info>
         <description>Custom Issue Picker for Jira provides a custom field type for picking either single or multiple issues
@@ -16,21 +16,21 @@
         <param name="plugin-type">both</param>
         <param name="configure.url">/secure/admin/IssuePickerFormatSettings.jspa</param>
     </plugin-info>
-    <!--<customercontext key="cwx-issuepicker-context" path="/rest/cwx-issuepicker">
+    <!--<customercontext key="ics-issuepicker-context" path="/rest/ics-issuepicker">
         <uri regex="/.*"/>
     </customercontext>-->
-    <rest name="Issue Picker REST Resource" key="cwx-issuepicker-rest" path="/cwx-issuepicker" version="1.0">
+    <rest name="Issue Picker REST Resource" key="ics-issuepicker-rest" path="/ics-issuepicker" version="1.0">
         <description>Provides functionality for issue picker.</description>
     </rest>
     <resource type="i18n" name="i18n" location="translations/issuepicker"/>
-    <web-resource key="cwx.issue-picker.web-resources-7.2.8.2" name="Issue Picker Web Resources">
+    <web-resource key="ics.issue-picker.web-resources-7.2.8.2" name="Issue Picker Web Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
-        <resource type="download" name="cwx-issue-picker.css" location="/css/cwx-issue-picker.css"/>
+        <resource type="download" name="ics-issue-picker.css" location="/css/ics-issue-picker.css"/>
         <context>jira.general</context>
         <context>atl.general</context>
         <context>atl.admin</context>
     </web-resource>
-    <web-resource key="cwx.issue-picker.field-7.2.8.2" name=" Issue Picker Field Resources">
+    <web-resource key="ics.issue-picker.field-7.2.8.2" name=" Issue Picker Field Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
         <dependency>com.atlassian.auiplugin:aui-select2</dependency>
         <dependency>com.atlassian.auiplugin:dialog2</dependency>
@@ -48,31 +48,31 @@
         <context>atl.general</context>
         <context>atl.admin</context>
     </web-resource>
-    <web-resource key="cwx.issue-picker.jsd-field-7.2.8.2" name="Issue Picker JSD Field Resources">
+    <web-resource key="ics.issue-picker.jsd-field-7.2.8.2" name="Issue Picker JSD Field Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
         <dependency>com.atlassian.auiplugin:aui-select2</dependency>
         <transformation extension="js">
             <transformer key="jsI18n"/>
         </transformation>
         <resource type="download" name="issue-picker-jsd-field.js" location="/js/issue-picker-jsd-field.js"/>
-        <resource type="download" name="cwx-issue-picker.css" location="/css/cwx-issue-picker.css"/>
+        <resource type="download" name="ics-issue-picker.css" location="/css/ics-issue-picker.css"/>
         <context>customerportal</context>
     </web-resource>
-    <web-resource key="cwx.issue-picker.config-7.2.8.2" name="Issue Picker Config Resources">
+    <web-resource key="ics.issue-picker.config-7.2.8.2" name="Issue Picker Config Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
         <dependency>com.atlassian.auiplugin:aui-select2</dependency>
         <resource type="download" name="issue-picker-field-config.js" location="/js/issue-picker-field-config.js"/>
-        <resource type="download" name="cwx-issue-picker-config.css" location="/css/cwx-issue-picker-config.css"/>
+        <resource type="download" name="ics-issue-picker-config.css" location="/css/ics-issue-picker-config.css"/>
         <context>issue-picker-field-config</context>
     </web-resource>
-    <web-resource key="cwx.issue-picker.field-mapping-7.2.8.2" name="Issue Picker Field Mapping Resources">
+    <web-resource key="ics.issue-picker.field-mapping-7.2.8.2" name="Issue Picker Field Mapping Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
         <dependency>com.atlassian.auiplugin:aui-select2</dependency>
-        <resource type="download" name="cwx-issue-picker-field-mapping.css"
-                  location="/css/cwx-issue-picker-field-mapping.css"/>
+        <resource type="download" name="ics-issue-picker-field-mapping.css"
+                  location="/css/ics-issue-picker-field-mapping.css"/>
         <context>issue-picker-field-mapping</context>
     </web-resource>
-    <webwork1 key="cwx-issuepicker-actions" name="Issue Picker Actions" roles-required="admin">
+    <webwork1 key="ics-issuepicker-actions" name="Issue Picker Actions" roles-required="admin">
         <description>Actions.</description>
         <actions>
             <action name="com.intel.jira.plugins.jqlissuepicker.actions.CwxConfigureIssuePickerAction"
@@ -85,7 +85,7 @@
             </action>
         </actions>
     </webwork1>
-    <webwork1 key="cwx-issuepicker-format-settings" name="Issue Picker Format Settings Action" roles-required="admin">
+    <webwork1 key="ics-issuepicker-format-settings" name="Issue Picker Format Settings Action" roles-required="admin">
         <description>Settings Action</description>
         <actions>
             <action name="com.intel.jira.plugins.jqlissuepicker.actions.IssuePickerFormatSettingsAction"
@@ -94,7 +94,7 @@
             </action>
         </actions>
     </webwork1>
-    <webwork1 key="cwx-issuepicker-field-mapping" name="Issue Picker Field Mapping Action" roles-required="admin">
+    <webwork1 key="ics-issuepicker-field-mapping" name="Issue Picker Field Mapping Action" roles-required="admin">
         <description>Setting Field mappings</description>
         <actions>
             <action name="com.intel.jira.plugins.jqlissuepicker.actions.IssuePickerFieldMappingAction"
@@ -103,7 +103,7 @@
             </action>
         </actions>
     </webwork1>
-    <webwork1 key="cwx-issuepicker-field-pair" name="Issue Picker Field Pair Action" roles-required="admin">
+    <webwork1 key="ics-issuepicker-field-pair" name="Issue Picker Field Pair Action" roles-required="admin">
         <description>Setting field pairs</description>
         <actions>
             <action name="com.intel.jira.plugins.jqlissuepicker.actions.IssuePickerFieldPairAction"
@@ -112,20 +112,20 @@
             </action>
         </actions>
     </webwork1>
-    <customfield-type name="Intel Issue Picker CustomField" key="cwx-issue-picker-cf"
-                      i18n-name-key="cwx.issue-picker.name"
+    <customfield-type name="Intel Issue Picker CustomField" key="ics-issue-picker-cf"
+                      i18n-name-key="ics.issue-picker.name"
                       class="com.intel.jira.plugins.jqlissuepicker.customfields.IssuePickerCFType">
-        <description key="cwx.issue-picker.description"/>
+        <description key="ics.issue-picker.description"/>
         <resource type="download" name="customfieldpreview.png" location="images/picker.png"/>
         <resource name="view" type="velocity" location="/templates/plugins/customfields/issue-picker-view.vm"/>
         <resource name="edit" type="velocity" location="/templates/plugins/customfields/issue-picker-edit.vm"/>
         <resource name="xml" type="velocity" location="/templates/plugins/customfields/issue-picker-xml.vm"/>
     </customfield-type>
-    <customfield-searcher name="Issue Picker Searcher" i18n-name-key="cwx.issue-picker.searcher.name"
+    <customfield-searcher name="Issue Picker Searcher" i18n-name-key="ics.issue-picker.searcher.name"
                           key="issue-picker-searcher"
                           class="com.intel.jira.plugins.jqlissuepicker.customfields.search.IssuePickerCFSearcher">
-        <description key="cwx.issue-picker.searcher.description"/>
-        <valid-customfield-type package="com.intel.jira.plugins.cwx-issue-picker" key="cwx-issue-picker-cf"/>
+        <description key="ics.issue-picker.searcher.description"/>
+        <valid-customfield-type package="com.intel.jira.plugins.ics-issue-picker" key="ics-issue-picker-cf"/>
         <resource type="velocity" name="search" location="templates/plugins/fields/edit-searcher/search-basictext.vm"/>
         <resource type="velocity" name="view"
                   location="templates/plugins/fields/view-searcher/view-searcher-basictext.vm"/>
@@ -140,13 +140,13 @@
                class="com.atlassian.activeobjects.external.TransactionalAnnotationProcessor">
         <decription>Processes @Transactional annotations.</decription>
     </component>
-    <component key="cwx-issue-picker-velocity-provider"
+    <component key="ics-issue-picker-velocity-provider"
                class="com.intel.jira.plugins.jqlissuepicker.customfields.IssuePickerVelocityProvider"/>
-    <component key="cwx-entity-service" class="com.intel.jira.plugins.jqlissuepicker.ao.EntityServiceImpl">
+    <component key="ics-entity-service" class="com.intel.jira.plugins.jqlissuepicker.ao.EntityServiceImpl">
         <description>Service for AO entity functions.</description>
         <interface>com.intel.jira.plugins.jqlissuepicker.ao.EntityService</interface>
     </component>
-    <component key="cwx-issue-picker-update-listener" public="true"
+    <component key="ics-issue-picker-update-listener" public="true"
                class="com.intel.jira.plugins.jqlissuepicker.listeners.IssuePickerUpdateListener">
         <interface>com.atlassian.sal.api.lifecycle.LifecycleAware</interface>
     </component>
@@ -154,7 +154,7 @@
         <interface>org.springframework.osgi.context.BundleContextAware</interface>
         <interface>org.springframework.beans.factory.DisposableBean</interface>
     </component>
-    <ao key="cwx-active-objects">
+    <ao key="ics-active-objects">
         <description>Active Objects.</description>
         <entity>com.intel.jira.plugins.jqlissuepicker.ao.entity.IssuePickerConfigEntity</entity>
         <entity>com.intel.jira.plugins.jqlissuepicker.ao.entity.FieldFormatEntity</entity>
@@ -165,19 +165,19 @@
                class="com.intel.jira.plugins.jqlissuepicker.upgradetasks.UpgradeTask1UnlimitedText">
         <interface>com.atlassian.sal.api.upgrade.PluginUpgradeTask</interface>
     </component>
-    <web-section key="cwx-issue-picker-config-section" name="Issue Picker Configuration Section"
-                 location="admin_plugins_menu" i18n-name-key="cwx.issue-picker.config.section.name" weight="150">
-        <label key="cwx.issue-picker.config.section.name"/>
+    <web-section key="ics-issue-picker-config-section" name="Issue Picker Configuration Section"
+                 location="admin_plugins_menu" i18n-name-key="ics.issue-picker.config.section.name" weight="150">
+        <label key="ics.issue-picker.config.section.name"/>
         <condition class="com.atlassian.jira.plugin.webfragment.conditions.UserIsAdminCondition"/>
     </web-section>
-    <web-item key="cwx-issue-picker-format-settings-item" name="Issue Picker Format Settings"
-              section="admin_plugins_menu/cwx-issue-picker-config-section">
-        <label key="cwx.issue-picker.format-settings.name"/>
-        <link linkId="cwx-issue-picker-format-config">/secure/admin/IssuePickerFormatSettings.jspa</link>
+    <web-item key="ics-issue-picker-format-settings-item" name="Issue Picker Format Settings"
+              section="admin_plugins_menu/ics-issue-picker-config-section">
+        <label key="ics.issue-picker.format-settings.name"/>
+        <link linkId="ics-issue-picker-format-config">/secure/admin/IssuePickerFormatSettings.jspa</link>
     </web-item>
-    <web-item key="cwx-issue-picker-field-mapping-item" name="Issue Picker Field Mapping"
-              section="admin_plugins_menu/cwx-issue-picker-config-section">
-        <label key="cwx.issue-picker.field-mapping.menu.name"/>
-        <link linkId="cwx-issue-picker-field-mapping">/secure/admin/IssuePickerFieldMapping.jspa</link>
+    <web-item key="ics-issue-picker-field-mapping-item" name="Issue Picker Field Mapping"
+              section="admin_plugins_menu/ics-issue-picker-config-section">
+        <label key="ics.issue-picker.field-mapping.menu.name"/>
+        <link linkId="ics-issue-picker-field-mapping">/secure/admin/IssuePickerFieldMapping.jspa</link>
     </web-item>
 </atlassian-plugin>

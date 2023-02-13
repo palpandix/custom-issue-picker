@@ -32,7 +32,7 @@
     #else
         #set($multiple = true)
     #end
-    <input type="hidden" class="cwx-select" name="${customField.id}" id="${customField.id}" value="$!value">
+    <input type="hidden" class="ics-select" name="${customField.id}" id="${customField.id}" value="$!value">
     ## fake input field, so Jira allows inline editing for our field
     <select class="hidden"></select>
     <div id="${customField.id}-info" class="hidden" data-issue-id="$!issueId" data-current-project-id="$!currentProjectId"
@@ -49,12 +49,12 @@
         data-initial-values="$initialValuesJson">
     </div>
     #if($ipConfig.selectionMode.name() == "MULTIPLE")
-        <a id="${customField.id}-popup-trigger" class="cwxip-popup-trigger" title="$i18n.getText("cwx.issue-picker.popup.tooltip")">
+        <a id="${customField.id}-popup-trigger" class="cwxip-popup-trigger" title="$i18n.getText("ics.issue-picker.popup.tooltip")">
             <span class="aui-icon aui-icon-small aui-iconfont-add"></span>
         </a>
     #end
 #else
-    <div class="cwx-aui-text">$i18n.getText("cwx.issue-picker.unconfigured", "$baseurl", "$customField.idAsLong")</div>
+    <div class="ics-aui-text">$i18n.getText("ics.issue-picker.unconfigured", "$baseurl", "$customField.idAsLong")</div>
 #end
 #cwxFooter($action $customField.id $fieldLayoutItem.fieldDescription)
 #end

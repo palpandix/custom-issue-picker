@@ -1,12 +1,12 @@
 #macro(cwxradio $name $enumValue $value)
     <div class="radio">
         <input class="radio" type="radio" name="$name" value="$enumValue" id="${name}${enumValue}"#if("$!value" == "$enumValue") checked#end>
-        <label for="${name}${enumValue}">$i18n.getText("cwx.issue-picker.config.${name}.${enumValue}")</label>
+        <label for="${name}${enumValue}">$i18n.getText("ics.issue-picker.config.${name}.${enumValue}")</label>
     </div>
 #end
 <html>
     <head>
-        #set($titleText = $i18n.getText("cwx.issue-picker.config.title", "$customFieldName"))
+        #set($titleText = $i18n.getText("ics.issue-picker.config.title", "$customFieldName"))
         <title>$titleText</title>
         <meta charset="utf-8" />
         $webResourceManager.requireResourcesForContext("issue-picker-field-config")
@@ -31,144 +31,144 @@
             <div class="aui-tabs horizontal-tabs">
               <ul class="tabs-menu">
                 <li class="menu-item active-tab">
-                  <a href="#tab-issue-section">$i18n.getText("cwx.issue-picker.config.issue-selection")</a>
+                  <a href="#tab-issue-section">$i18n.getText("ics.issue-picker.config.issue-selection")</a>
                 </li>
                 <li class="menu-item">
-                  <a href="#tab-display-attribute">$i18n.getText("cwx.issue-picker.config.display-attributes")</a>
+                  <a href="#tab-display-attribute">$i18n.getText("ics.issue-picker.config.display-attributes")</a>
                 </li>
                 <!--<li class="menu-item">
-                  <a href="#tab-actions-on-save">$i18n.getText("cwx.issue-picker.config.actions-on-save")</a>
+                  <a href="#tab-actions-on-save">$i18n.getText("ics.issue-picker.config.actions-on-save")</a>
                 </li>
                 <li class="menu-item">
-                  <a href="#tab-create-new-issue">$i18n.getText("cwx.issue-picker.config.create-new-issue")</a>
+                  <a href="#tab-create-new-issue">$i18n.getText("ics.issue-picker.config.create-new-issue")</a>
                 </li>-->
               </ul>
               
             <div class="tabs-pane active-pane" id="tab-issue-section">
               <div class="field-group">
-                  <label for="jql">$i18n.getText("cwx.issue-picker.config.jql")</label>
+                  <label for="jql">$i18n.getText("ics.issue-picker.config.jql")</label>
                   <input type="text" class="text long-field" id="jql" name="jql" value="$!jql" />
                   <a class="help-lnk" id="viewTemplateHelp" href="${req.contextPath}/secure/admin/CwxJPickFormatHelp.jspa" data-helplink="local">
                       <span class="aui-icon aui-icon-small aui-iconfont-help"></span>
                   </a>
-                  <div class="description">$i18n.getText("cwx.issue-picker.config.jql.desc")</div>
+                  <div class="description">$i18n.getText("ics.issue-picker.config.jql.desc")</div>
               </div>
               <div class="field-group">
-                  <label for="jqlUser">$i18n.getText("cwx.issue-picker.config.jqlUser")</label>
+                  <label for="jqlUser">$i18n.getText("ics.issue-picker.config.jqlUser")</label>
                   <input type="text" class="text" id="jqlUser" name="jqlUser" value="$!jqlUser" />
-                  <div class="description">$i18n.getText("cwx.issue-picker.config.jqlUser.desc")</div>
+                  <div class="description">$i18n.getText("ics.issue-picker.config.jqlUser.desc")</div>
               </div>
               <div class="field-group">
-                  <label for="maxSearchResults">$i18n.getText("cwx.issue-picker.config.maxSearchResults")</label>
+                  <label for="maxSearchResults">$i18n.getText("ics.issue-picker.config.maxSearchResults")</label>
                   <input type="text" class="text" id="maxSearchResults" name="maxSearchResults" pattern="\d*" value="$!maxSearchResults" />
-                  <div class="description">$i18n.getText("cwx.issue-picker.config.maxSearchResults.desc")</div>
+                  <div class="description">$i18n.getText("ics.issue-picker.config.maxSearchResults.desc")</div>
               </div>
               <fieldset class="group">
-                  <legend><span>$i18n.getText("cwx.issue-picker.config.selectionMode")</span></legend>
+                  <legend><span>$i18n.getText("ics.issue-picker.config.selectionMode")</span></legend>
                   #cwxradio("selectionMode" "NONE" $!selectionMode)
                   #cwxradio("selectionMode" "SINGLE" $!selectionMode)
                   #cwxradio("selectionMode" "MULTIPLE" $!selectionMode)
-                  <div class="description">$i18n.getText("cwx.issue-picker.config.selectionMode.desc")</div>
+                  <div class="description">$i18n.getText("ics.issue-picker.config.selectionMode.desc")</div>
               </fieldset>
               <fieldset class="group">
                   <input id="presetValue" type="checkbox" name="presetValue" class="checkbox" value="true"
                       #if($presetValue) checked="true" #end>
-                  <label for="presetValue">$i18n.getText("cwx.issue-picker.config.presetValue")</label>
-                  <div class="description">$i18n.getText("cwx.issue-picker.config.presetValue.desc")</div>
+                  <label for="presetValue">$i18n.getText("ics.issue-picker.config.presetValue")</label>
+                  <div class="description">$i18n.getText("ics.issue-picker.config.presetValue.desc")</div>
               </fieldset>
             </div>
 
             <div class="tabs-pane" id="tab-display-attribute">
               <fieldset class="group">
-                  <legend><span>$i18n.getText("cwx.issue-picker.config.displayMode")</span></legend>
+                  <legend><span>$i18n.getText("ics.issue-picker.config.displayMode")</span></legend>
                   #cwxradio("displayMode" "KEY_ONLY" $!displayMode)
                   #cwxradio("displayMode" "SINGLE_ATTRIBUTE" $!displayMode)
-                  <div class="field-group cwx-radio-field-group">
+                  <div class="field-group ics-radio-field-group">
                       #selectMapSelected("displayAttribute" $textFields $!displayAttribute)
                       <fieldset>
                           <input id="showIssueKey" type="checkbox" name="showIssueKey" class="checkbox" value="true"
                               #if($showIssueKey) checked="true" #end>
-                          <label for="showIssueKey">$i18n.getText("cwx.issue-picker.config.showIssueKey")</label>
+                          <label for="showIssueKey">$i18n.getText("ics.issue-picker.config.showIssueKey")</label>
                       </fieldset>
                   </div>
                   #cwxradio("displayMode" "CUSTOM_FORMAT" $!displayMode)
-                  <div class="field-group cwx-radio-field-group">
+                  <div class="field-group ics-radio-field-group">
                       <input type="text" class="text long-field" id="customFormat" name="customFormat" value="$!customFormat" />
                     <a class="help-lnk" id="viewTemplateHelp" href="${req.contextPath}/secure/admin/CwxJPickFormatHelp.jspa" data-helplink="local">
                           <span class="aui-icon aui-icon-small aui-iconfont-help"></span>
                       </a>
-                      <div class="description">$i18n.getText("cwx.issue-picker.config.displayMode.CUSTOM_FORMAT.desc")</div>
+                      <div class="description">$i18n.getText("ics.issue-picker.config.displayMode.CUSTOM_FORMAT.desc")</div>
                   </div>
               </fieldset>
               <div class="field-group">
-                  <label for="fieldsToDisplay">$i18n.getText("cwx.issue-picker.config.fieldsToDisplay")</label>
+                  <label for="fieldsToDisplay">$i18n.getText("ics.issue-picker.config.fieldsToDisplay")</label>
                   <select id="fieldsToDisplay" name="fieldsToDisplay" class="select" multiple>
                       #foreach($field in $fieldInfos)
                           <option value="$field.id" #if($field.selected) selected #end>$field.name</option>
                       #end
                   </select>
-                  <div class="description">$i18n.getText("cwx.issue-picker.config.fieldsToDisplay.desc")</div>
+                  <div class="description">$i18n.getText("ics.issue-picker.config.fieldsToDisplay.desc")</div>
               </div>
               <div class="field-group">
-                  <label for="sumUpFields">$i18n.getText("cwx.issue-picker.config.sumUpFields")</label>
+                  <label for="sumUpFields">$i18n.getText("ics.issue-picker.config.sumUpFields")</label>
                     <select id="sumUpFields" name="sumUpFields" class="select" multiple>
                       #foreach($field in $sumUpFieldInfos)
                           <option value="$field.id" #if($field.selected) selected #end>$field.name</option>
                       #end
                   </select>
-                  <div class="description">$i18n.getText("cwx.issue-picker.config.sumUpFields.desc")</div>
+                  <div class="description">$i18n.getText("ics.issue-picker.config.sumUpFields.desc")</div>
               </div>
               <fieldset class="group">
                   <input id="indexTableFields" type="checkbox" name="indexTableFields" class="checkbox" value="true"
                       #if($indexTableFields) checked="true" #end>
-                  <label for="indexTableFields">$i18n.getText("cwx.issue-picker.config.indexTableFields")</label>
-                  <div class="description">$i18n.getText("cwx.issue-picker.config.indexTableFields.desc")</div>
+                  <label for="indexTableFields">$i18n.getText("ics.issue-picker.config.indexTableFields")</label>
+                  <div class="description">$i18n.getText("ics.issue-picker.config.indexTableFields.desc")</div>
               </fieldset>
               <fieldset class="group">
                   <input id="expandIssueTable" type="checkbox" name="expandIssueTable" class="checkbox" value="true"
                       #if($expandIssueTable) checked="true" #end>
-                  <label for="expandIssueTable">$i18n.getText("cwx.issue-picker.config.expandIssueTable")</label>
-                  <div class="description">$i18n.getText("cwx.issue-picker.config.expandIssueTable.desc")</div>
+                  <label for="expandIssueTable">$i18n.getText("ics.issue-picker.config.expandIssueTable")</label>
+                  <div class="description">$i18n.getText("ics.issue-picker.config.expandIssueTable.desc")</div>
               </fieldset>
               <div class="field-group">
-                  <label for="csvExportUseDispaly">$i18n.getText("cwx.issue-picker.config.csvExportUseDisplay")</label>
+                  <label for="csvExportUseDispaly">$i18n.getText("ics.issue-picker.config.csvExportUseDisplay")</label>
                   <input id="csvExportUseDisplay" type="checkbox" name="csvExportUseDisplay" class="checkbox" value="true"
                     #if($csvExportUseDisplay) checked="true" #end>
-                  <div class="description">$i18n.getText("cwx.issue-picker.config.csvExportUseDisplay.desc")</div>
+                  <div class="description">$i18n.getText("ics.issue-picker.config.csvExportUseDisplay.desc")</div>
               </div>
             </div>
 
             <div class="tabs-pane" id="tab-actions-on-save">
               <fieldset class="group">
-                  <legend><span>$i18n.getText("cwx.issue-picker.config.linkMode")</span></legend>
+                  <legend><span>$i18n.getText("ics.issue-picker.config.linkMode")</span></legend>
                   #cwxradio("linkMode" "NONE" $!linkMode)
                   #cwxradio("linkMode" "SYNC" $!linkMode)
                   #cwxradio("linkMode" "LINK_ONLY" $!linkMode)
-                  <div class="description">$i18n.getText("cwx.issue-picker.config.linkMode.desc")</div>
+                  <div class="description">$i18n.getText("ics.issue-picker.config.linkMode.desc")</div>
               </fieldset>
               <div class="field-group">
-                  <label for="linkType">$i18n.getText("cwx.issue-picker.config.linkType")</label>
+                  <label for="linkType">$i18n.getText("ics.issue-picker.config.linkType")</label>
                   #selectMapSelected("linkType" $linkTypes $!linkType)
-                  <div class="description">$i18n.getText("cwx.issue-picker.config.linkType.desc")</div>
+                  <div class="description">$i18n.getText("ics.issue-picker.config.linkType.desc")</div>
               </div>
               <div class="field-group">
-                  <label for="fieldsToCopy">$i18n.getText("cwx.issue-picker.config.fieldsToCopy")</label>
+                  <label for="fieldsToCopy">$i18n.getText("ics.issue-picker.config.fieldsToCopy")</label>
                   <select id="fieldsToCopy" name="fieldsToCopy" class="select" multiple>
                       #foreach($field in $copyableFieldInfos)
                           <option value="$field.id" #if($field.selected) selected #end>$field.name</option>
                       #end
                   </select>
-                  <div class="description">$i18n.getText("cwx.issue-picker.config.fieldsToCopy.desc")</div>
+                  <div class="description">$i18n.getText("ics.issue-picker.config.fieldsToCopy.desc")</div>
               </div>
               <div class="field-group">
-                <label for="copyFieldMapping">$i18n.getText("cwx.issue-picker.config.copyFieldMapping")</label>
+                <label for="copyFieldMapping">$i18n.getText("ics.issue-picker.config.copyFieldMapping")</label>
                 <select id="copyFieldMapping" name="copyFieldMapping" class="select">
-                    <option value="EMPTY" selected="selected">$i18n.getText('cwx.issue-picker.config.mapping.none')</option>
+                    <option value="EMPTY" selected="selected">$i18n.getText('ics.issue-picker.config.mapping.none')</option>
                     #foreach($fieldMapping in $fieldMappings)
                         <option value="$fieldMapping.id" #if($fieldMapping.id == $copyFieldMapping) selected #end>$fieldMapping.name</option>
                     #end
                 </select>
-                <div class="description">$i18n.getText("cwx.issue-picker.config.copyFieldMapping.desc")</div>
+                <div class="description">$i18n.getText("ics.issue-picker.config.copyFieldMapping.desc")</div>
               </div>
             </div>
 
@@ -176,43 +176,43 @@
               <fieldset class="group">
                   <input id="createNewValue" type="checkbox" name="createNewValue" class="checkbox" value="true"
                       #if($createNewValue) checked="true" #end>
-                  <label for="createNewValue">$i18n.getText("cwx.issue-picker.config.createNewValue")</label>
-                  <div class="description">$i18n.getText("cwx.issue-picker.config.createNewValue.desc")</div>
+                  <label for="createNewValue">$i18n.getText("ics.issue-picker.config.createNewValue")</label>
+                  <div class="description">$i18n.getText("ics.issue-picker.config.createNewValue.desc")</div>
               </fieldset>
               <div class="field-group">
-                  <label for="newIssueProject">$i18n.getText("cwx.issue-picker.config.newIssueProject")</label>
+                  <label for="newIssueProject">$i18n.getText("ics.issue-picker.config.newIssueProject")</label>
                   #selectMapSelected("newIssueProject" $projects $!newIssueProject)
-                  <div class="description">$i18n.getText("cwx.issue-picker.config.newIssueProject.desc")</div>
+                  <div class="description">$i18n.getText("ics.issue-picker.config.newIssueProject.desc")</div>
               </div>
               <fieldset class="group">
                   <input id="currentProject" type="checkbox" name="currentProject" class="checkbox" value="true"
                       #if($currentProject) checked="true" #end>
-                  <label for="currentProject">$i18n.getText("cwx.issue-picker.config.currentProject")</label>
-                  <div class="description">$i18n.getText("cwx.issue-picker.config.currentProject.desc")</div>
+                  <label for="currentProject">$i18n.getText("ics.issue-picker.config.currentProject")</label>
+                  <div class="description">$i18n.getText("ics.issue-picker.config.currentProject.desc")</div>
               </fieldset>
               <div class="field-group">
-                  <label for="newIssueType">$i18n.getText("cwx.issue-picker.config.newIssueType")</label>
+                  <label for="newIssueType">$i18n.getText("ics.issue-picker.config.newIssueType")</label>
                   #selectMapSelected("newIssueType" $issueTypes $!newIssueType)
-                  <div class="description">$i18n.getText("cwx.issue-picker.config.newIssueType.desc")</div>
+                  <div class="description">$i18n.getText("ics.issue-picker.config.newIssueType.desc")</div>
               </div>
               <div class="field-group">
-                  <label for="fieldsToInit">$i18n.getText("cwx.issue-picker.config.fieldsToInit")</label>
+                  <label for="fieldsToInit">$i18n.getText("ics.issue-picker.config.fieldsToInit")</label>
                   <select id="fieldsToInit" name="fieldsToInit" class="select" multiple>
                       #foreach($field in $initableFieldInfos)
                           <option value="$field.id" #if($field.selected) selected #end>$field.name</option>
                       #end
                   </select>
-                  <div class="description">$i18n.getText("cwx.issue-picker.config.fieldsToInit.desc")</div>
+                  <div class="description">$i18n.getText("ics.issue-picker.config.fieldsToInit.desc")</div>
               </div>
               <div class="field-group">
-                <label for="initFieldMapping">$i18n.getText("cwx.issue-picker.config.initFieldMapping")</label>
+                <label for="initFieldMapping">$i18n.getText("ics.issue-picker.config.initFieldMapping")</label>
                 <select id="initFieldMapping" name="initFieldMapping" class="select">
-                    <option value="EMPTY" selected="selected">$i18n.getText('cwx.issue-picker.config.mapping.none')</option>
+                    <option value="EMPTY" selected="selected">$i18n.getText('ics.issue-picker.config.mapping.none')</option>
                     #foreach($fieldMapping in $fieldMappings)
                         <option value="$fieldMapping.id" #if($fieldMapping.id == $initFieldMapping) selected #end>$fieldMapping.name</option>
                     #end
                 </select>
-               <div class="description">$i18n.getText("cwx.issue-picker.config.initFieldMapping.desc")</div>
+               <div class="description">$i18n.getText("ics.issue-picker.config.initFieldMapping.desc")</div>
             </div>
             </div>
             </div>

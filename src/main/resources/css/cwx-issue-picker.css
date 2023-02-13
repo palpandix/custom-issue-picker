@@ -1,14 +1,14 @@
-.cwx-aui-text {
+.ics-aui-text {
 	padding: 5px 0 0 0;
 }
-span.cwx-sigma {
+span.ics-sigma {
 	font-size: 18px;
 }
-table.aui > tfoot.cwx-footer > tr > td {
+table.aui > tfoot.ics-footer > tr > td {
 	border-top-width: 2px;
 }
 /* center 'remove' button in select2 */
-.cwx-select a.select2-choice abbr {
+.ics-select a.select2-choice abbr {
 	top: 10px;
 	bottom: -4px;
 }
@@ -17,16 +17,16 @@ table.aui > tfoot.cwx-footer > tr > td {
 form.aui .jsd-issue-picker.aui-select2-container {
     max-width: 100%;
 }
-.cwx-select.aui-select2-container .select2-choices .select2-search-choice {
+.ics-select.aui-select2-container .select2-choices .select2-search-choice {
     padding: 1px 18px 1px 5px;
     margin: 1px 5px 1px 0;
     line-height: 1;
 }
-.cwx-select.aui-select2-container .select2-choices .select2-search-field input {
+.ics-select.aui-select2-container .select2-choices .select2-search-field input {
     padding: 0;
 }
 /* move the [x] button only for multi-picker */
-.cwx-multi-select.aui-select2-container .select2-search-choice-close {
+.ics-multi-select.aui-select2-container .select2-search-choice-close {
     position: absolute;
     left: auto;
     right: 5px;
@@ -56,12 +56,12 @@ form.aui .jsd-issue-picker.aui-select2-container {
     bottom: 15px;
 }
 
-.cwx-deleted {
+.ics-deleted {
 	text-decoration: line-through;
 }
 
-table.aui > thead > tr > td.cwx-right-align,
-table.aui > tbody > tr > td.cwx-right-align,
-table.aui > tfoot > tr > td.cwx-right-align {
+table.aui > thead > tr > td.ics-right-align,
+table.aui > tbody > tr > td.ics-right-align,
+table.aui > tfoot > tr > td.ics-right-align {
 	text-align: right;
 }

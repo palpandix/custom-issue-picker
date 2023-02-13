@@ -31,5 +31,5 @@
         </div>
     #end
 #else
-    $i18n.getText("cwx.issue-picker.unconfigured", "$baseurl", "$customField.idAsLong")
+    $i18n.getText("ics.issue-picker.unconfigured", "$baseurl", "$customField.idAsLong")
 #end

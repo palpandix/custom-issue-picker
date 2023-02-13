@@ -22,13 +22,13 @@ AJS.toInit(function() {
 
     function fetchIssuePickerConfigurations(requestType) {
         var url = AJS.contextPath() +
-            '/rest/cwx-issuepicker/latest/issuepicker/configuration?requestType=' + encodeURIComponent(requestType);
+            '/rest/ics-issuepicker/latest/issuepicker/configuration?requestType=' + encodeURIComponent(requestType);
         return AJS.$.get(url);
     }
 
     function fetchJsdViewData(issueKey) {
         var url = AJS.contextPath() +
-            '/rest/cwx-issuepicker/latest/issuepicker/jsd-viewdata?issueKey=' + encodeURIComponent(issueKey);
+            '/rest/ics-issuepicker/latest/issuepicker/jsd-viewdata?issueKey=' + encodeURIComponent(issueKey);
         return AJS.$.get(url);
     }
 
@@ -56,9 +56,9 @@ AJS.toInit(function() {
         }
         // build select field
         var multiple = false;
-        var select = ['<input id="', 'select_customfield_' + id, '" class="cwx-select jsd-issue-picker'];
+        var select = ['<input id="', 'select_customfield_' + id, '" class="ics-select jsd-issue-picker'];
         if (config.selectionMode === 'MULTIPLE') {
-            select.push(' cwx-multi-select"');
+            select.push(' ics-multi-select"');
             multiple = true;
         } else {
             select.push('" ');
@@ -69,7 +69,7 @@ AJS.toInit(function() {
         AJS.$('#select_customfield_' + id).auiSelect2({
             query: function queryIssuePicker(query) {
                 var url = AJS.contextPath() +
-                    '/rest/cwx-issuepicker/latest/issuepicker/search?customFieldId=' + encodeURIComponent('customfield_' + id) +
+                    '/rest/ics-issuepicker/latest/issuepicker/search?customFieldId=' + encodeURIComponent('customfield_' + id) +
                     '&requestType=' + encodeURIComponent(requestTypeId) +
                     '&query=' + encodeURIComponent(query.term);
                 AJS.$.get(url).done(function(result) {
@@ -82,7 +82,7 @@ AJS.toInit(function() {
                             data.results.push({ id: entry.key, text: entry.displayName });
                         });
                         if (result.issues.length < result.total) {
-                            var message = AJS.I18n.getText("cwx.issue-picker.more-results", result.issues.length, result.total);
+                            var message = AJS.I18n.getText("ics.issue-picker.more-results", result.issues.length, result.total);
                             data.results.push({ text: message });
                         }
                     }
@@ -91,7 +91,7 @@ AJS.toInit(function() {
             },
             multiple: multiple,
             dropdownAutoWidth: true,
-            placeholder: AJS.I18n.getText("cwx.issue-picker.none")
+            placeholder: AJS.I18n.getText("ics.issue-picker.none")
         });
     }
 

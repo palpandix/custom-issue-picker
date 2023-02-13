@@ -1,34 +1,34 @@
 #macro(cwxfield $id $value)
     <div class="field-group">
-        <label for="$id">$i18n.getText("cwx.issue-picker.config.${id}")</label>
-        <span id="$id" class="cwx-value-label">$!value</span>
+        <label for="$id">$i18n.getText("ics.issue-picker.config.${id}")</label>
+        <span id="$id" class="ics-value-label">$!value</span>
     </div>
 #end
 #if ($config)
     <style>
-    span.cwx-value-label {
+    span.ics-value-label {
         float: left;
         padding-top: 5px;
     }
-    #cwx-config-form .field-group {
+    #ics-config-form .field-group {
         padding-left: 180px;
     }
-    #cwx-config-form .field-group > label {
+    #ics-config-form .field-group > label {
         margin-left: -220px;
         width: 200px;
     }
     </style>
-    <form id="cwx-config-form" class="aui">
-        <h6>$i18n.getText("cwx.issue-picker.config.issue-selection")</h6>
+    <form id="ics-config-form" class="aui">
+        <h6>$i18n.getText("ics.issue-picker.config.issue-selection")</h6>
         #cwxfield("jql" $!config.jql)
         #cwxfield("jqlUser" $!config.jqlUser)
         #cwxfield("maxSearchResults" $!config.maxSearchResults)
-        #cwxfield("selectionMode" $i18n.getText("cwx.issue-picker.config.selectionMode.${config.selectionMode}"))
+        #cwxfield("selectionMode" $i18n.getText("ics.issue-picker.config.selectionMode.${config.selectionMode}"))
         #if($config.selectionMode == "SINGLE")
             #cwxfield("presetValue" $!presetValue)
         #end
 
-        <h6>$i18n.getText("cwx.issue-picker.config.display-attributes")</h6>
+        <h6>$i18n.getText("ics.issue-picker.config.display-attributes")</h6>
         #cwxfield("displayAttr" $!displayAttribute)
         #if($showIssueKey)
             #cwxfield("showIssueKey" $!showIssueKey)
@@ -41,8 +41,8 @@
         #end
 		 #cwxfield("csvExportUseDisplay" $!csvExportUseDisplay)
 		
-        <h6>$i18n.getText("cwx.issue-picker.config.actions-on-save")</h6>
-        #cwxfield("linkMode" $i18n.getText("cwx.issue-picker.config.linkMode.${config.linkMode}"))
+        <h6>$i18n.getText("ics.issue-picker.config.actions-on-save")</h6>
+        #cwxfield("linkMode" $i18n.getText("ics.issue-picker.config.linkMode.${config.linkMode}"))
         #if($config.linkMode != "NONE")
             #cwxfield("linkType" $!linkType)
         #end
@@ -51,7 +51,7 @@
             #cwxfield("copyFieldMapping" $!copyFieldMapping)
         #end
 
-        <h6>$i18n.getText("cwx.issue-picker.config.create-new-issue")</h6>
+        <h6>$i18n.getText("ics.issue-picker.config.create-new-issue")</h6>
         #cwxfield("createNewValue" $!createNewValue)
         #if($config.createNewValue)
             #cwxfield("currentProject" $!currentProject)
@@ -64,5 +64,5 @@
         #end
     </form>
 #else
-    <p>$i18n.getText("cwx.issue-picker.config.unconfigured")</p>
+    <p>$i18n.getText("ics.issue-picker.config.unconfigured")</p>
 #end
