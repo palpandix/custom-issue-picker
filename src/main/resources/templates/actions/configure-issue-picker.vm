@@ -36,10 +36,10 @@
                 <li class="menu-item">
                   <a href="#tab-display-attribute">$i18n.getText("ics.issue-picker.config.display-attributes")</a>
                 </li>
-                <!--<li class="menu-item">
+                <li class="menu-item">
                   <a href="#tab-actions-on-save">$i18n.getText("ics.issue-picker.config.actions-on-save")</a>
                 </li>
-                <li class="menu-item">
+                <!--<li class="menu-item">
                   <a href="#tab-create-new-issue">$i18n.getText("ics.issue-picker.config.create-new-issue")</a>
                 </li>-->
               </ul>
@@ -53,7 +53,7 @@
                   </a>
                   <div class="description">$i18n.getText("ics.issue-picker.config.jql.desc")</div>
               </div>
-              <div class="field-group">
+              <div class="field-group hide">
                   <label for="jqlUser">$i18n.getText("ics.issue-picker.config.jqlUser")</label>
                   <input type="text" class="text" id="jqlUser" name="jqlUser" value="$!jqlUser" />
                   <div class="description">$i18n.getText("ics.issue-picker.config.jqlUser.desc")</div>
@@ -100,7 +100,7 @@
                       <div class="description">$i18n.getText("ics.issue-picker.config.displayMode.CUSTOM_FORMAT.desc")</div>
                   </div>
               </fieldset>
-              <div class="field-group">
+              <div class="field-group hide">
                   <label for="fieldsToDisplay">$i18n.getText("ics.issue-picker.config.fieldsToDisplay")</label>
                   <select id="fieldsToDisplay" name="fieldsToDisplay" class="select" multiple>
                       #foreach($field in $fieldInfos)
@@ -109,7 +109,7 @@
                   </select>
                   <div class="description">$i18n.getText("ics.issue-picker.config.fieldsToDisplay.desc")</div>
               </div>
-              <div class="field-group">
+              <div class="field-group hide">
                   <label for="sumUpFields">$i18n.getText("ics.issue-picker.config.sumUpFields")</label>
                     <select id="sumUpFields" name="sumUpFields" class="select" multiple>
                       #foreach($field in $sumUpFieldInfos)
@@ -118,19 +118,19 @@
                   </select>
                   <div class="description">$i18n.getText("ics.issue-picker.config.sumUpFields.desc")</div>
               </div>
-              <fieldset class="group">
+              <fieldset class="group hide">
                   <input id="indexTableFields" type="checkbox" name="indexTableFields" class="checkbox" value="true"
                       #if($indexTableFields) checked="true" #end>
                   <label for="indexTableFields">$i18n.getText("ics.issue-picker.config.indexTableFields")</label>
                   <div class="description">$i18n.getText("ics.issue-picker.config.indexTableFields.desc")</div>
               </fieldset>
-              <fieldset class="group">
+              <fieldset class="group hide">
                   <input id="expandIssueTable" type="checkbox" name="expandIssueTable" class="checkbox" value="true"
                       #if($expandIssueTable) checked="true" #end>
                   <label for="expandIssueTable">$i18n.getText("ics.issue-picker.config.expandIssueTable")</label>
                   <div class="description">$i18n.getText("ics.issue-picker.config.expandIssueTable.desc")</div>
               </fieldset>
-              <div class="field-group">
+              <div class="field-group hide">
                   <label for="csvExportUseDispaly">$i18n.getText("ics.issue-picker.config.csvExportUseDisplay")</label>
                   <input id="csvExportUseDisplay" type="checkbox" name="csvExportUseDisplay" class="checkbox" value="true"
                     #if($csvExportUseDisplay) checked="true" #end>
@@ -151,7 +151,7 @@
                   #selectMapSelected("linkType" $linkTypes $!linkType)
                   <div class="description">$i18n.getText("ics.issue-picker.config.linkType.desc")</div>
               </div>
-              <div class="field-group">
+              <div class="field-group hide">
                   <label for="fieldsToCopy">$i18n.getText("ics.issue-picker.config.fieldsToCopy")</label>
                   <select id="fieldsToCopy" name="fieldsToCopy" class="select" multiple>
                       #foreach($field in $copyableFieldInfos)
@@ -160,7 +160,7 @@
                   </select>
                   <div class="description">$i18n.getText("ics.issue-picker.config.fieldsToCopy.desc")</div>
               </div>
-              <div class="field-group">
+              <div class="field-group hide">
                 <label for="copyFieldMapping">$i18n.getText("ics.issue-picker.config.copyFieldMapping")</label>
                 <select id="copyFieldMapping" name="copyFieldMapping" class="select">
                     <option value="EMPTY" selected="selected">$i18n.getText('ics.issue-picker.config.mapping.none')</option>

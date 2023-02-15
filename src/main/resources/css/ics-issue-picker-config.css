@@ -12,3 +12,7 @@ div.aui-select2-container.select.select2-container.select2-container-disabled.se
 div.aui-select2-container.select.select2-container.select2-container-disabled.select2-container-multi ul.select2-choices:hover{
 	cursor: not-allowed;
 }
+
+.hide {
+    display: none !important;
+}

@@ -21,7 +21,7 @@
     <form id="ics-config-form" class="aui">
         <h6>$i18n.getText("ics.issue-picker.config.issue-selection")</h6>
         #cwxfield("jql" $!config.jql)
-        #cwxfield("jqlUser" $!config.jqlUser)
+        ###cwxfield("jqlUser" $!config.jqlUser)
         #cwxfield("maxSearchResults" $!config.maxSearchResults)
         #cwxfield("selectionMode" $i18n.getText("ics.issue-picker.config.selectionMode.${config.selectionMode}"))
         #if($config.selectionMode == "SINGLE")
@@ -33,35 +33,35 @@
         #if($showIssueKey)
             #cwxfield("showIssueKey" $!showIssueKey)
         #end
-        #if($config.selectionMode != "SINGLE")
-            #cwxfield("fieldsToDisplay" $!fieldsToCopy)
-            #cwxfield("sumUpFields" $!sumUpFields)
-            #cwxfield("indexTableFields" $!indexTableFields)
-            #cwxfield("expandIssueTable" $!expandIssueTable)
-        #end
-		 #cwxfield("csvExportUseDisplay" $!csvExportUseDisplay)
+        ###if($config.selectionMode != "SINGLE")
+        ##    #cwxfield("fieldsToDisplay" $!fieldsToCopy)
+        ##    #cwxfield("sumUpFields" $!sumUpFields)
+        ##    #cwxfield("indexTableFields" $!indexTableFields)
+        ##    #cwxfield("expandIssueTable" $!expandIssueTable)
+        ###end
+		## #cwxfield("csvExportUseDisplay" $!csvExportUseDisplay)
 		
         <h6>$i18n.getText("ics.issue-picker.config.actions-on-save")</h6>
         #cwxfield("linkMode" $i18n.getText("ics.issue-picker.config.linkMode.${config.linkMode}"))
         #if($config.linkMode != "NONE")
             #cwxfield("linkType" $!linkType)
         #end
-        #if($config.selectionMode == "SINGLE")
-            #cwxfield("fieldsToCopy" $!fieldsToCopy)
-            #cwxfield("copyFieldMapping" $!copyFieldMapping)
-        #end
+        ###if($config.selectionMode == "SINGLE")
+        ##    #cwxfield("fieldsToCopy" $!fieldsToCopy)
+        ##    #cwxfield("copyFieldMapping" $!copyFieldMapping)
+        ###end
 
-        <h6>$i18n.getText("ics.issue-picker.config.create-new-issue")</h6>
-        #cwxfield("createNewValue" $!createNewValue)
-        #if($config.createNewValue)
-            #cwxfield("currentProject" $!currentProject)
-            #if(!$config.currentProject)
-                #cwxfield("newIssueProject" $!newIssueProject)
-            #end
-            #cwxfield("newIssueType" $!newIssueType)
-            #cwxfield("fieldsToInit" $!fieldsToInit)
-            #cwxfield("initFieldMapping" $!initFieldMapping)
-        #end
+        ##<h6>$i18n.getText("ics.issue-picker.config.create-new-issue")</h6>
+        ###cwxfield("createNewValue" $!createNewValue)
+        ###if($config.createNewValue)
+        ##    #cwxfield("currentProject" $!currentProject)
+        ##    #if(!$config.currentProject)
+        ##        #cwxfield("newIssueProject" $!newIssueProject)
+        ##    #end
+        ##    #cwxfield("newIssueType" $!newIssueType)
+        ##    #cwxfield("fieldsToInit" $!fieldsToInit)
+        ##    #cwxfield("initFieldMapping" $!initFieldMapping)
+        ###end
     </form>
 #else
     <p>$i18n.getText("ics.issue-picker.config.unconfigured")</p>
