@@ -5,7 +5,7 @@
         <description>Custom Issue Picker for Jira provides a custom field type for picking either single or multiple issues
             from a predefined set of issues based on a JQL query.
         </description>
-        <version>7.2.8.2</version>
+        <version>1.0.0.0</version>
         <vendor name="intel" url="https://www.intel.com"/>
         <param name="plugin-icon">images/plugin-icon.png</param>
         <param name="plugin-logo">images/plugin-logo.png</param>
@@ -23,14 +23,14 @@
         <description>Provides functionality for issue picker.</description>
     </rest>
     <resource type="i18n" name="i18n" location="translations/issuepicker"/>
-    <web-resource key="ics.issue-picker.web-resources-7.2.8.2" name="Issue Picker Web Resources">
+    <web-resource key="ics.issue-picker.web-resources-1.0.0.0" name="Issue Picker Web Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
         <resource type="download" name="ics-issue-picker.css" location="/css/ics-issue-picker.css"/>
         <context>jira.general</context>
         <context>atl.general</context>
         <context>atl.admin</context>
     </web-resource>
-    <web-resource key="ics.issue-picker.field-7.2.8.2" name=" Issue Picker Field Resources">
+    <web-resource key="ics.issue-picker.field-1.0.0.0" name=" Issue Picker Field Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
         <dependency>com.atlassian.auiplugin:aui-select2</dependency>
         <dependency>com.atlassian.auiplugin:dialog2</dependency>
@@ -48,7 +48,7 @@
         <context>atl.general</context>
         <context>atl.admin</context>
     </web-resource>
-    <web-resource key="ics.issue-picker.jsd-field-7.2.8.2" name="Issue Picker JSD Field Resources">
+    <web-resource key="ics.issue-picker.jsd-field-1.0.0.0" name="Issue Picker JSD Field Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
         <dependency>com.atlassian.auiplugin:aui-select2</dependency>
         <transformation extension="js">
@@ -58,14 +58,14 @@
         <resource type="download" name="ics-issue-picker.css" location="/css/ics-issue-picker.css"/>
         <context>customerportal</context>
     </web-resource>
-    <web-resource key="ics.issue-picker.config-7.2.8.2" name="Issue Picker Config Resources">
+    <web-resource key="ics.issue-picker.config-1.0.0.0" name="Issue Picker Config Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
         <dependency>com.atlassian.auiplugin:aui-select2</dependency>
         <resource type="download" name="issue-picker-field-config.js" location="/js/issue-picker-field-config.js"/>
         <resource type="download" name="ics-issue-picker-config.css" location="/css/ics-issue-picker-config.css"/>
         <context>issue-picker-field-config</context>
     </web-resource>
-    <web-resource key="ics.issue-picker.field-mapping-7.2.8.2" name="Issue Picker Field Mapping Resources">
+    <web-resource key="ics.issue-picker.field-mapping-1.0.0.0" name="Issue Picker Field Mapping Resources">
         <dependency>com.atlassian.auiplugin:ajs</dependency>
         <dependency>com.atlassian.auiplugin:aui-select2</dependency>
         <resource type="download" name="ics-issue-picker-field-mapping.css"
