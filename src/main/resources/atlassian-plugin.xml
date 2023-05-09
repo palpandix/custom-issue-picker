@@ -131,22 +131,22 @@
                   location="templates/plugins/fields/view-searcher/view-searcher-basictext.vm"/>
         <resource name="label" type="velocity" location="/templates/plugins/customfields/issue-picker-search-label.vm"/>
     </customfield-searcher>
-    <component-import key="pluginLicenseManager" name="Plugin License Manager"
-                      interface="com.atlassian.upm.api.license.PluginLicenseManager"/>
-    <component-import key="userManager" interface="com.atlassian.sal.api.user.UserManager"/>
+    <!--<component-import key="pluginLicenseManager" name="Plugin License Manager"
+                      interface="com.atlassian.upm.api.license.PluginLicenseManager"/>-->
+    <!--<component-import key="userManager" interface="com.atlassian.sal.api.user.UserManager"/>-->
     <component-import key="ao" name="Active Objects service"
                       interface="com.atlassian.activeobjects.external.ActiveObjects"/>
-    <component key="tx-processor" name="Transactional Annotation Processor"
+    <!--<component key="tx-processor" name="Transactional Annotation Processor"
                class="com.atlassian.activeobjects.external.TransactionalAnnotationProcessor">
         <decription>Processes @Transactional annotations.</decription>
-    </component>
+    </component>-->
     <component key="ics-issue-picker-velocity-provider"
                class="com.intel.jira.plugins.jqlissuepicker.customfields.IssuePickerVelocityProvider"/>
     <component key="ics-entity-service" class="com.intel.jira.plugins.jqlissuepicker.ao.EntityServiceImpl">
         <description>Service for AO entity functions.</description>
         <interface>com.intel.jira.plugins.jqlissuepicker.ao.EntityService</interface>
     </component>
-    <component key="ics-issue-picker-update-listener" public="true"
+  <component key="ics-issue-picker-update-listener" public="true"
                class="com.intel.jira.plugins.jqlissuepicker.listeners.IssuePickerUpdateListener">
         <interface>com.atlassian.sal.api.lifecycle.LifecycleAware</interface>
     </component>
@@ -161,7 +161,7 @@
         <entity>com.intel.jira.plugins.jqlissuepicker.ao.entity.FieldPairEntity</entity>
         <entity>com.intel.jira.plugins.jqlissuepicker.ao.entity.FieldMappingEntity</entity>
     </ao>
-    <component key="upgrade-task-1-unlimited-text" name="Upgrade Task 1 - Unlimited Text" public="true"
+   <component key="upgrade-task-1-unlimited-text" name="Upgrade Task 1 - Unlimited Text" public="true"
                class="com.intel.jira.plugins.jqlissuepicker.upgradetasks.UpgradeTask1UnlimitedText">
         <interface>com.atlassian.sal.api.upgrade.PluginUpgradeTask</interface>
     </component>

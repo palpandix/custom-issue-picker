@@ -1,11 +1,9 @@
 package com.intel.jira.plugins.jqlissuepicker.servicedesk;
 
-import com.atlassian.fugue.Either;
+
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.project.Project;
-import com.atlassian.jira.project.ProjectManager;
 import com.atlassian.jira.user.ApplicationUser;
-import com.atlassian.pocketknife.api.commons.error.AnError;
 import com.atlassian.servicedesk.api.ServiceDesk;
 import com.atlassian.servicedesk.api.ServiceDeskService;
 import com.atlassian.servicedesk.api.field.CustomerRequestCreateMeta;
@@ -22,8 +20,6 @@ import com.atlassian.servicedesk.api.util.paging.PagedResponse;
 import com.atlassian.servicedesk.api.util.paging.SimplePagedRequest;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -34,7 +30,7 @@ import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Nullable;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,14 +38,12 @@ import org.slf4j.LoggerFactory;
 public class ServiceDeskHelper {
     private static final Logger LOG = LoggerFactory.getLogger(ServiceDeskHelper.class);
     private static Cache<Integer, Optional<Pair<Long, Long>>> requestTypeCache;
-    private final ProjectManager projectManager;
     private final ServiceDeskService serviceDeskService;
     private final RequestTypeService requestTypeService;
     private final RequestTypeFieldService requestTypeFieldService;
     private final PortalService portalService;
 
-    public ServiceDeskHelper(ProjectManager projectManager, Object serviceDeskService, Object requestTypeService, Object requestTypeFieldService, Object portalService) {
-        this.projectManager = projectManager;
+    public ServiceDeskHelper(Object serviceDeskService, Object requestTypeService, Object requestTypeFieldService, Object portalService) {
         this.serviceDeskService = (ServiceDeskService)serviceDeskService;
         this.requestTypeService = (RequestTypeService)requestTypeService;
         this.requestTypeFieldService = (RequestTypeFieldService)requestTypeFieldService;
@@ -76,42 +70,21 @@ public class ServiceDeskHelper {
 
             while(var4.hasNext()) {
                 RequestType type = (RequestType)var4.next();
+                LOG.trace("checking request type with name {} and ID {} and portal ID {}", new Object[]{type.getName(), type.getId(), type.getPortalId()});
                 if (type.getId() == requestTypeId) {
                     LOG.trace("found request type {} for id {}", type.getName(), requestTypeId);
-                    Long projectId = this.getProjectForPortal(user, type);
-                    if (projectId == null) {
-                        return null;
-                    }
-
+                    Portal portal = this.portalService.getPortalForId(user, type.getPortalId());
+                    ServiceDesk serviceDesk = this.serviceDeskService.getServiceDeskForPortal(user, portal);
+                    Long projectId = serviceDesk.getProjectId();
                     return Pair.of(projectId, type.getIssueTypeId());
                 }
             }
 
             LOG.warn("no request type with id {}", requestTypeId);
         } else {
-            LOG.error("could not get request types");
+            LOG.warn("could not get any request types");
         }
 
-        return null;
-    }
-
-    private Long getProjectForPortal(ApplicationUser user, RequestType requestType) {
-        int portalId = this.getPortalId(requestType);
-        Iterator var4 = this.projectManager.getProjects().iterator();
-
-        while(var4.hasNext()) {
-            Project project = (Project)var4.next();
-            LOG.trace("project {} of type {}", project.getName(), project.getProjectTypeKey());
-            if (StringUtils.equals(project.getProjectTypeKey().getKey(), "service_desk")) {
-                Either<AnError, Portal> portal = this.portalService.getPortalForProject(user, project);
-                if (portal.isRight() && ((Portal)portal.getOrNull()).getId() == portalId) {
-                    LOG.debug("found project {} for request type {}", project.getKey(), requestType.getId());
-                    return project.getId();
-                }
-            }
-        }
-
-        LOG.warn("no project for request type {}", requestType.getId());
         return null;
     }
 
@@ -124,15 +97,10 @@ public class ServiceDeskHelper {
         do {
             PagedRequest pagedRequest = new SimplePagedRequest(start, limit);
             RequestTypeQuery query = this.requestTypeService.newQueryBuilder().pagedRequest(pagedRequest).build();
-            Either<AnError, PagedResponse<RequestType>> result = this.requestTypeService.getRequestTypes(user, query);
-            if (result.isRight()) {
-                allRequestTypes.addAll(((PagedResponse)result.getOrNull()).getResults());
-                hasMore = ((PagedResponse)result.getOrNull()).hasNextPage();
-                start += limit;
-            } else {
-                LOG.warn("could not get request types: {}", result.left().get());
-                hasMore = false;
-            }
+            PagedResponse<RequestType> result = this.requestTypeService.getRequestTypes(user, query);
+            allRequestTypes.addAll(result.getResults());
+            hasMore = result.hasNextPage();
+            start += limit;
         } while(hasMore);
 
         return allRequestTypes;
@@ -140,9 +108,9 @@ public class ServiceDeskHelper {
 
     public Map<String, String> getIssuePickerFieldNames(ApplicationUser user, Issue issue) {
         RequestTypeQuery query = this.requestTypeService.newQueryBuilder().issue(issue.getId()).build();
-        Either<AnError, PagedResponse<RequestType>> requestTypes = this.requestTypeService.getRequestTypes(user, query);
-        if (requestTypes.getOrNull() != null) {
-            Optional<RequestType> first = ((PagedResponse)requestTypes.getOrNull()).findFirst();
+        PagedResponse<RequestType> requestTypes = this.requestTypeService.getRequestTypes(user, query);
+        if (requestTypes.size() > 0) {
+            Optional<RequestType> first = requestTypes.findFirst();
             if (first.isPresent()) {
                 return this.getIssuePickerFieldNames(user, issue.getProjectObject(), ((RequestType)first.get()).getId());
             }
@@ -152,13 +120,18 @@ public class ServiceDeskHelper {
     }
 
     public Map<String, String> getIssuePickerFieldNames(ApplicationUser user, Project project, int requestTypeId) {
-        Either<AnError, ServiceDesk> desk = this.serviceDeskService.getServiceDeskForProject(user, project);
-        if (!desk.isLeft() && desk.getOrNull() != null) {
-            RequestTypeFieldQuery query = this.requestTypeFieldService.newQueryBuilder().requestType(requestTypeId).serviceDesk(((ServiceDesk)desk.getOrNull()).getId()).build();
-            Either<AnError, CustomerRequestCreateMeta> result = this.requestTypeFieldService.getCustomerRequestCreateMeta(user, query);
-            if (!result.isLeft() && result.getOrNull() != null) {
+        ServiceDesk desk = this.serviceDeskService.getServiceDeskForProject(user, project);
+        if (desk == null) {
+            LOG.warn("could not get service desk for project {}", project.getKey());
+            return Collections.emptyMap();
+        } else {
+            RequestTypeFieldQuery query = this.requestTypeFieldService.newQueryBuilder().requestType(requestTypeId).serviceDesk(desk.getId()).build();
+            CustomerRequestCreateMeta result = this.requestTypeFieldService.getCustomerRequestCreateMeta(user, query);
+            if (CollectionUtils.isEmpty(result.requestTypeFields())) {
+                return Collections.emptyMap();
+            } else {
                 Map<String, String> map = new HashMap();
-                Iterator var8 = ((CustomerRequestCreateMeta)result.getOrNull()).requestTypeFields().iterator();
+                Iterator var8 = result.requestTypeFields().iterator();
 
                 while(var8.hasNext()) {
                     RequestTypeField field = (RequestTypeField)var8.next();
@@ -168,23 +141,7 @@ public class ServiceDeskHelper {
                 }
 
                 return map;
-            } else {
-                return Collections.emptyMap();
             }
-        } else {
-            LOG.warn("could not get service desk for project {}", project.getKey());
-            return Collections.emptyMap();
-        }
-    }
-
-    private int getPortalId(RequestType requestType) {
-        try {
-            Method method = RequestType.class.getMethod("getPortalId");
-            Number result = (Number)method.invoke(requestType);
-            return result.intValue();
-        } catch (SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException var4) {
-            LOG.error("could not get portal id from request type", var4);
-            return 0;
         }
     }
 

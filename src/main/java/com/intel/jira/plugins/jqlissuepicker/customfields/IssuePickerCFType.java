@@ -52,7 +52,7 @@ import org.apache.lucene.search.TermQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class IssuePickerCFType extends GenericTextCFType implements GroupSelectorField, ExportableCustomFieldType {
+public class IssuePickerCFType extends GenericTextCFType  {
     public static final String NEW_ISSUE_KEY_PREFIX = "new-";
     public static final String NEW_ISSUE_KEY_DISPALY_POSTFIX = "(new)";
     private static final Logger LOG = LoggerFactory.getLogger(IssuePickerCFType.class);

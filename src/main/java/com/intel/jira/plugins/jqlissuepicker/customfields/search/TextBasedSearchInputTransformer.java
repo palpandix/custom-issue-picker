@@ -17,7 +17,7 @@ import com.atlassian.jira.util.MessageSet;
 import com.atlassian.query.lucene.parsing.LuceneQueryParserFactory;
 import java.util.Collection;
 import java.util.Iterator;
-import org.apache.lucene.queryParser.QueryParser;
+import org.apache.lucene.queryparser.classic.QueryParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

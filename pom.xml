@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.intel.jira.plugins</groupId>
     <artifactId>custom-issue-picker</artifactId>
-    <version>7.2.8.2</version>
+    <version>1.0</version>
 
     <organization>
         <name>Intel Company</name>
@@ -17,7 +14,6 @@
     <name>ics-issue-picker</name>
     <description>This is the com.intel.jira.plugins:custom-issue-picker plugin for Atlassian JIRA.</description>
     <packaging>atlassian-plugin</packaging>
-
     <dependencies>
         <dependency>
             <groupId>com.atlassian.jira</groupId>
@@ -118,7 +114,7 @@
             </plugin>
             <plugin>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.10.1</version>
+                <version>3.2</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -127,11 +123,14 @@
         </plugins>
     </build>
     <properties>
-        <jira.version>7.2.0</jira.version>
-        <jsd.version>3.2.0-038-01</jsd.version>
+        <jira.min-version>8.0.0</jira.min-version>
+        <jira.version>8.0.0</jira.version>
+        <jira.max-version>9.0.0</jira.max-version>
+        <jsd.version>4.0.0</jsd.version>
+        <amps.version>8.0.2</amps.version>
         <ao.version>1.1.5</ao.version>
-        <amps.version>8.0.0</amps.version>
-        <upm.license.version>2.19.1</upm.license.version>
+
+        <upm.license.version>4.0.1</upm.license.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

@@ -27,33 +27,26 @@ import com.intel.jira.plugins.jqlissuepicker.ao.dto.IssuePickerConfig;
 import com.intel.jira.plugins.jqlissuepicker.data.SelectionMode;
 import com.intel.jira.plugins.jqlissuepicker.rest.IssueEntry;
 import com.intel.jira.plugins.jqlissuepicker.util.Fields;
+import com.intel.jira.plugins.jqlissuepicker.util.Fields.BasicField;
 import com.intel.jira.plugins.jqlissuepicker.util.NumberFormatter;
 import com.intel.jira.plugins.jqlissuepicker.util.QueryUtil;
 import com.intel.jira.plugins.jqlissuepicker.util.TemplateUtils;
-import com.intel.jira.plugins.jqlissuepicker.util.Fields.BasicField;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.text.Collator;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.annotation.Nullable;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.text.Collator;
+import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 public class IssuePickerVelocityProvider {
     private static final String INITIAL_VALUES_JSON = "initialValuesJson";
@@ -76,6 +69,7 @@ public class IssuePickerVelocityProvider {
         this.permissionManager = permissionManager;
         this.issueManager = issueManager;
         this.searchService = searchService;
+
         this.entityService = entityService;
     }
 
@@ -495,6 +489,7 @@ public class IssuePickerVelocityProvider {
             this.key = key;
             this.displayName = displayName;
             this.hyperLink = hyperLink;
+
             this.fieldValues = fieldValues;
             this.selected = selected;
         }
@@ -510,6 +505,8 @@ public class IssuePickerVelocityProvider {
         public String getHyperLink() {
             return this.hyperLink;
         }
+
+
 
         public Map<String, FieldValue> getFieldValues() {
             return this.fieldValues;

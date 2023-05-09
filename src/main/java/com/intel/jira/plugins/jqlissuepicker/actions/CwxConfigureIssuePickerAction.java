@@ -6,6 +6,8 @@ import com.atlassian.jira.issue.customfields.CustomFieldType;
 import com.atlassian.jira.issue.customfields.impl.GenericTextCFType;
 import com.atlassian.jira.issue.customfields.impl.NumberCFType;
 import com.atlassian.jira.issue.fields.CustomField;
+import com.atlassian.jira.issue.fields.config.FieldConfig;
+import com.atlassian.jira.issue.fields.config.manager.FieldConfigManager;
 import com.atlassian.jira.issue.issuetype.IssueType;
 import com.atlassian.jira.issue.link.IssueLinkType;
 import com.atlassian.jira.issue.link.IssueLinkTypeManager;
@@ -80,14 +82,16 @@ public class CwxConfigureIssuePickerAction extends JiraWebActionSupport {
     private transient List<FieldInfo> initableFieldInfos;
     private String initFieldMapping;
     private String copyFieldMapping;
+    private final transient FieldConfigManager fieldConfigManager;
 
-    public CwxConfigureIssuePickerAction(CustomFieldManager customFieldManager, IssueLinkTypeManager issueLinkTypeManager, ProjectManager projectManager, IssueTypeManager issueTypeManager, EntityService entityService, I18nHelper i18n) {
+    public CwxConfigureIssuePickerAction(CustomFieldManager customFieldManager, IssueLinkTypeManager issueLinkTypeManager, ProjectManager projectManager, IssueTypeManager issueTypeManager, EntityService entityService, I18nHelper i18n, FieldConfigManager fieldConfigManager) {
         this.customFieldManager = customFieldManager;
         this.issueLinkTypeManager = issueLinkTypeManager;
         this.projectManager = projectManager;
         this.issueTypeManager = issueTypeManager;
         this.entityService = entityService;
         this.i18n = i18n;
+        this.fieldConfigManager = fieldConfigManager;
     }
 
     public String execute() throws Exception {
@@ -310,6 +314,13 @@ public class CwxConfigureIssuePickerAction extends JiraWebActionSupport {
     }
 
     public String getCustomFieldId() {
+        if (this.customFieldId == null) {
+            FieldConfig fieldConfig = StringUtils.isNumeric(this.fieldConfigId) ? this.fieldConfigManager.getFieldConfig(Long.parseLong(this.fieldConfigId)) : null;
+            if (fieldConfig != null) {
+                this.customFieldId = fieldConfig.getCustomField().getIdAsLong().toString();
+            }
+        }
+
         return this.customFieldId;
     }
 
@@ -468,6 +479,7 @@ public class CwxConfigureIssuePickerAction extends JiraWebActionSupport {
     public List<FieldInfo> getSumUpFieldInfos() {
         return this.sumUpFieldInfos;
     }
+
 
     public List<FieldInfo> getInitableFieldInfos() {
         return this.initableFieldInfos;

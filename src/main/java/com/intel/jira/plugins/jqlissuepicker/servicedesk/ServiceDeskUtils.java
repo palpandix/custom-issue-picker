@@ -1,8 +1,8 @@
 package com.intel.jira.plugins.jqlissuepicker.servicedesk;
 
+
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.project.Project;
-import com.atlassian.jira.project.ProjectManager;
 import com.atlassian.jira.user.ApplicationUser;
 import java.util.Collections;
 import java.util.Map;
@@ -22,14 +22,12 @@ public class ServiceDeskUtils implements BundleContextAware, DisposableBean {
     private static final String REQUEST_TYPE_SERVICE = "com.atlassian.servicedesk.api.requesttype.RequestTypeService";
     private static final String REQUEST_TYPE_FIELD_SERVICE = "com.atlassian.servicedesk.api.field.RequestTypeFieldService";
     private static final String PORTAL_SERVICE = "com.atlassian.servicedesk.api.portal.PortalService";
-    private final ProjectManager projectManager;
     private ServiceTracker<?, ?> serviceDeskServiceTracker;
     private ServiceTracker<?, ?> requestTypeServiceTracker;
     private ServiceTracker<?, ?> requestTypeFieldServiceTracker;
     private ServiceTracker<?, ?> portalServiceTracker;
 
-    public ServiceDeskUtils(ProjectManager projectManager) {
-        this.projectManager = projectManager;
+    public ServiceDeskUtils() {
     }
 
     public void setBundleContext(BundleContext bundleContext) {
@@ -75,6 +73,6 @@ public class ServiceDeskUtils implements BundleContextAware, DisposableBean {
     private ServiceDeskHelper getServiceDeskHelper() {
         boolean isServiceDeskActive = this.serviceDeskServiceTracker != null && this.serviceDeskServiceTracker.getService() != null && this.requestTypeServiceTracker != null && this.requestTypeServiceTracker.getService() != null && this.requestTypeFieldServiceTracker != null && this.requestTypeFieldServiceTracker.getService() != null && this.portalServiceTracker != null && this.portalServiceTracker.getService() != null;
         LOG.debug("JIRA Service Desk is active: {}", isServiceDeskActive);
-        return isServiceDeskActive ? new ServiceDeskHelper(this.projectManager, this.serviceDeskServiceTracker.getService(), this.requestTypeServiceTracker.getService(), this.requestTypeFieldServiceTracker.getService(), this.portalServiceTracker.getService()) : null;
+        return isServiceDeskActive ? new ServiceDeskHelper(this.serviceDeskServiceTracker.getService(), this.requestTypeServiceTracker.getService(), this.requestTypeFieldServiceTracker.getService(), this.portalServiceTracker.getService()) : null;
     }
 }

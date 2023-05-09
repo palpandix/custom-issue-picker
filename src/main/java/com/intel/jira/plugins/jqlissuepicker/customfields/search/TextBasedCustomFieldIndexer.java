@@ -1,8 +1,11 @@
 package com.intel.jira.plugins.jqlissuepicker.customfields.search;
 
+
+
 import com.atlassian.jira.issue.Issue;
 import com.atlassian.jira.issue.fields.CustomField;
 import com.atlassian.jira.issue.index.indexers.impl.AbstractCustomFieldIndexer;
+import com.atlassian.jira.issue.index.indexers.impl.FieldIndexerUtil;
 import com.atlassian.jira.web.FieldVisibilityManager;
 import com.intel.jira.plugins.jqlissuepicker.customfields.IssuePickerCFType;
 import java.util.Collection;
@@ -10,11 +13,13 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import javax.annotation.Nonnull;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.Field.Index;
+import org.apache.lucene.document.SortedDocValuesField;
+import org.apache.lucene.document.SortedSetDocValuesField;
+import org.apache.lucene.document.TextField;
 import org.apache.lucene.document.Field.Store;
+import org.apache.lucene.util.BytesRef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,14 +33,14 @@ public class TextBasedCustomFieldIndexer extends AbstractCustomFieldIndexer {
     }
 
     public final void addDocumentFieldsSearchable(Document doc, Issue issue) {
-        this.addDocumentFields(doc, issue, Index.ANALYZED, true);
+        this.addDocumentFields(doc, issue, true);
     }
 
     public final void addDocumentFieldsNotSearchable(Document doc, Issue issue) {
-        this.addDocumentFields(doc, issue, Index.NO, false);
+        this.addDocumentFields(doc, issue, false);
     }
 
-    private void addDocumentFields(Document doc, Issue issue, Field.Index fieldIndexType, boolean sortable) {
+    private void addDocumentFields(Document doc, Issue issue, boolean searchable) {
         Object fieldValue = this.customField.getValue(issue);
         LOG.trace("indexing field {} for issue {}, value {}", new Object[]{this.customField.getName(), issue.getKey(), fieldValue});
         if (fieldValue != null) {
@@ -48,35 +53,39 @@ public class TextBasedCustomFieldIndexer extends AbstractCustomFieldIndexer {
                 LOG.warn("unsupported type in issue {}, field {}: {}", new Object[]{issue.getKey(), this.customField.getName(), fieldValue});
             }
 
-            Iterator var7 = issueKeys.iterator();
+            boolean first = true;
 
-            while(var7.hasNext()) {
+            for(Iterator var7 = issueKeys.iterator(); var7.hasNext(); first = false) {
                 String key = (String)var7.next();
-                this.indexValue(issue, doc, key, fieldIndexType, sortable);
+                this.indexValue(issue, doc, key, searchable && first);
             }
 
         }
     }
 
-    private void indexValue(Issue issue, Document doc, @Nonnull String value, Field.Index fieldIndexType, boolean sortable) {
+    private void indexValue(Issue issue, Document doc, @Nonnull String value, boolean searchable) {
         if (StringUtils.isNotBlank(value)) {
-            Iterator var6 = this.getIndexValuesForIssueValue(issue, value).iterator();
+            Iterator var5 = this.getIndexValuesForIssueValue(issue, value).iterator();
 
-            while(var6.hasNext()) {
-                String indexValue = (String)var6.next();
-                LOG.trace("indexing value {}", indexValue);
-                doc.add(new Field(this.getDocumentFieldId(), indexValue, Store.YES, fieldIndexType));
+            String valueForSorting;
+            while(var5.hasNext()) {
+                valueForSorting = (String)var5.next();
+                LOG.trace("indexing value {}", valueForSorting);
+                doc.add(new TextField(this.getDocumentFieldId(), valueForSorting, Store.YES));
+                doc.add(new SortedSetDocValuesField(this.getDocumentFieldId(), new BytesRef(valueForSorting)));
             }
 
-            if (sortable) {
-                String sortText = this.getSortIndexTextForValue(value);
-                doc.add(new Field(this.sortFieldPrefix + this.getDocumentFieldId(), sortText, Store.NO, Index.NOT_ANALYZED_NO_NORMS));
+            if (searchable) {
+                String sortText = this.getSortIndexTextForValue(issue, value);
+                valueForSorting = FieldIndexerUtil.getValueForSorting(sortText);
+                LOG.trace("sort text: {}", sortText);
+                doc.add(new SortedDocValuesField(this.sortFieldPrefix + this.getDocumentFieldId(), new BytesRef(valueForSorting)));
             }
         }
 
     }
 
-    protected String getSortIndexTextForValue(@Nonnull String value) {
+    protected String getSortIndexTextForValue(Issue issue, @Nonnull String value) {
         return value;
     }
 
@@ -84,3 +93,4 @@ public class TextBasedCustomFieldIndexer extends AbstractCustomFieldIndexer {
         return Collections.singletonList(value);
     }
 }
+

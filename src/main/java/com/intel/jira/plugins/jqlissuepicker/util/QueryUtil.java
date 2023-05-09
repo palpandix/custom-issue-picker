@@ -41,7 +41,7 @@ public class QueryUtil {
             if (results == null) {
                 return Collections.emptyList();
             } else {
-                List<Issue> issues = new ArrayList(results.getIssues());
+                List<Issue> issues = new ArrayList(results.getResults());
                 issues.remove(issue);
                 return issues;
             }
