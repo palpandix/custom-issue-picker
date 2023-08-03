@@ -13,8 +13,22 @@
                 <span class="aui-icon aui-icon-small aui-iconfont-close-dialog">{getText('ics.issue-picker.popup.close')}</span>
             </a>
         </header>
+
+
         <div class="aui-dialog2-content">
+
             <form class="aui">
+              <div class="field-group">
+                <label for="linkType">{getText('ics.issue-picker.config.linkType')}</label>
+                 <select id="issueLinkTypesDropdown"></select> &nbsp;&nbsp;
+                 <button type="button" class="aui-button cwxip-popup-config">
+
+                                     &nbsp;&nbsp;{getText('ics.issue-picker.popup.save-linkType')}
+                                 </button>
+
+                 <div class="description">{getText('ics.issue-picker.config.linkType.desc')}</div>
+               </div>
+
                 <input type="text" class="text cwxip-popup-search-text">
                 <button type="button" class="aui-button cwxip-popup-search">
                     <span class="aui-icon aui-icon-small aui-iconfont-search"></span>
@@ -34,11 +48,19 @@
                     &nbsp;{getText('ics.issue-picker.popup.invert-selection')}
                 </button>
             </form>
-            <table class="aui cwxip-popup-results-table">
+            <table class="aui cwxip-popup-results-table" >
                 <tbody>
                 </tbody>
             </table>
+
         </div>
+
+          <table style="display:none">
+                                      <tbody>
+                                                ghkklll
+                                       </tbody>
+           </table>
+
         <footer class="aui-dialog2-footer">
             <div class="aui-dialog2-footer-actions">
                 <button type="button" class="aui-button cwxip-popup-apply">{getText('ics.issue-picker.popup.apply')}</button>

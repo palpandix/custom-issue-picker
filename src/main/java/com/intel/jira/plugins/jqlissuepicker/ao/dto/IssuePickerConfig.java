@@ -63,6 +63,7 @@ public class IssuePickerConfig {
     public IssuePickerConfig() {
     }
 
+
     public IssuePickerConfig(Long fieldConfigId, SelectionMode selectionMode, String displayAttributeFieldId, Boolean showIssueKey, String customFormat, LinkMode linkMode, Long linkTypeId, Boolean outward, String jql, String jqlUser, Integer maxSearchResults, @Nonnull List<String> fieldsToCopy, @Nonnull List<String> sumUpFields, @Nonnull List<String> fieldsToInit, Boolean presetValue, Boolean indexTableFields, Boolean expandIssueTable, Boolean csvExportUseDisplay, Boolean createNewValue, String newIssueProject, Boolean currentProject, String newIssueType, String initFieldMapping, String copyFieldMapping) {
         this.fieldConfigId = fieldConfigId;
         this.selectionMode = selectionMode;
