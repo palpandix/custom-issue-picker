@@ -1,4 +1,5 @@
 AJS.toInit(function() {
+    var globalIssueId;
     function searchIssuePicker(id, issueId, currentProjectId, currentIssueTypeId, cfConfigId, queryTerm, resultCallback) {
         var url = AJS.contextPath() +
             '/rest/ics-issuepicker/latest/issuepicker/search?customFieldId=' + encodeURIComponent(id);
@@ -12,6 +13,47 @@ AJS.toInit(function() {
         url += '&query=' + encodeURIComponent(queryTerm);
         AJS.$.get(url).done(resultCallback);
     }
+    function updateIssuePicker(id, issueId, currentProjectId, currentIssueTypeId, cfConfigId) {
+           console.log("my issssssssssssssueeee");
+           var selectedValue=AJS.$("#issueLinkTypesDropdown").val();
+                    var url = AJS.contextPath() +'/rest/ics-issuepicker/1.0/issuepicker/savefieldConfigId?linkType='+encodeURIComponent(selectedValue)+'&cfConfigId='+cfConfigId;
+
+                                      AJS.$.ajax({
+                                          url: url,
+                                          type: "PUT",
+                                          data: "",
+                                          dataType: "json",
+                                          success: function(msg){
+                                           console.log("msg");
+
+                                          }
+                                       })
+
+
+    }
+    function test(issueId){
+                     console.log("hi");
+                     var url = AJS.contextPath() +'/rest/ics-issuepicker/1.0/issuepicker/viewIssueLinkTypes?issueId='+encodeURIComponent(issueId);
+                      AJS.$.ajax({
+                          url: url,
+                          type: "GET",
+                          data: "",
+                          dataType: "json",
+                          success: function(msg){
+                          /*var issueLinkTypes = [];
+                          var keys = Object.keys(msg);
+                          keys.forEach(function(key){
+                                  issueLinkTypes.push(msg[key]);
+                           });*/
+                          // return issueLinkTypes;
+                          // console.log(result);
+                           createDropdown(msg.issueLinkTypes);
+                            //console.log("msg for issuelinktypes"+msg.issueLinkTypes);
+                          }
+
+                        });
+
+        }
 
     function buildQueryIssuePickerFunction(id, issueId, currentProjectId, currentIssueTypeId, cfConfigId, multiple) {
         return function queryIssuePicker(query) {
@@ -40,6 +82,7 @@ AJS.toInit(function() {
         var selectInput$ = AJS.$('#' + id + '-info');
         var createNewFieldId = selectInput$.data('create-new-field');
         var issueId = selectInput$.data('issue-id');
+        globalIssueId=issueId;
         var currentProjectId = selectInput$.data('current-project-id');
         var currentIssueTypeId = selectInput$.data('current-issue-type-id');
         var cfConfigId = selectInput$.data('cf-config-id');
@@ -66,7 +109,15 @@ AJS.toInit(function() {
             var popupSearch = function(queryTerm, resultCallback) {
                 searchIssuePicker(id, issueId, currentProjectId, currentIssueTypeId, cfConfigId, queryTerm, resultCallback);
             };
-            openPopup(id, popupSearch);
+              var configUpdate = function(resultCallback) {
+                 updateIssuePicker(id, issueId, currentProjectId, currentIssueTypeId, cfConfigId);
+             };
+            /* var testconfigUpdate = function(resultCallback) {
+                              test(issueId);
+              };
+              console.log("test config update"+testconfigUpdate);*/
+            openPopup(id, popupSearch,configUpdate);
+
         });
 
         if (presetValue && !issueId && issueId !== "") {
@@ -148,7 +199,7 @@ AJS.toInit(function() {
         });
         activateSortableTable();
     }
-    
+
     function activateSortableTable() {
       var tables = AJS.$(".cwxtable");
       tables.each(function(index){
@@ -162,10 +213,26 @@ AJS.toInit(function() {
           });
         }
       });
-      
+
+    }
+    function createDropdown(issueLinkTypes) {
+      var dropdown = document.getElementById("issueLinkTypesDropdown");
+      //console.log("issue link types"+issueLinkTypes[0]);
+      for(var i=0;i<issueLinkTypes.length;i++){
+        //console.log(issueLinkTypes[i]);
+         var option1 = document.createElement("option");
+         var option2 = document.createElement("option");
+         option1.value = issueLinkTypes[i].id+'|'+'true';
+         option1.text = issueLinkTypes[i].outward + '('+issueLinkTypes[i].name+')' ;
+         option2.value = issueLinkTypes[i].id+'|'+'false';
+         option2.text = issueLinkTypes[i].inward + '('+issueLinkTypes[i].name+')' ;
+         dropdown.appendChild(option1);
+         dropdown.appendChild(option2);
+      }
+
     }
 
-    function openPopup(id, popupSearch) {
+    function openPopup(id, popupSearch,configUpdate) {
         var backgroundBlanket = AJS.$('.aui-blanket').attr('aria-hidden') === 'false';
         AJS.$('body').append(ics.IssuePicker.createSelectionPopup());
 
@@ -179,6 +246,14 @@ AJS.toInit(function() {
         AJS.$(popup + ' .cwxip-popup-close').on('click', function() {
             AJS.dialog2(popup).hide();
         });
+
+        AJS.$('#issueLinkTypesDropdown').on('load', test(globalIssueId));
+        //AJS.$('#issueLinkTypesDropdown').on('change', test1());
+        AJS.$(popup + ' .cwxip-popup-config').on('click', function(){
+             performConfigUpdate(configUpdate, AJS.$('#' + id).val());
+
+        }) ;
+
         AJS.dialog2(popup).on('hide', function() {
             if (backgroundBlanket) {
                 // restore blanket after dialog-close handlers have run
@@ -192,6 +267,7 @@ AJS.toInit(function() {
                 e.preventDefault();
                 performPopupSearch(popupSearch, AJS.$('#' + id).val());
             }
+            AJS.$('#myTable').hide();
         });
         AJS.$(popup + ' .cwxip-popup-search').on('click', function() {
             performPopupSearch(popupSearch, AJS.$('#' + id).val());
@@ -208,6 +284,7 @@ AJS.toInit(function() {
             checked$.prop('checked', false);
             unchecked$.prop('checked', true);
         });
+
         AJS.$(popup + ' .cwxip-popup-apply').on('click', function() {
             popupApply(id);
         });
@@ -217,7 +294,10 @@ AJS.toInit(function() {
         AJS.dim(false, 3490);
         AJS.$(popup).css('z-index', 3500);
     }
-
+    function performConfigUpdate(configUpdate,currentSelection){
+        console.log("inside perform config");
+        configUpdate();
+    }
     function performPopupSearch(popupSearch, currentSelection) {
         AJS.$('#cwxip-spinner').spin();
         var popup = '#ics-issue-picker-popup';
@@ -228,10 +308,9 @@ AJS.toInit(function() {
             var html = [];
             html.push('<tr data-id="');
             html.push(issue.key);
-            html.push('"><td class="cwxip-check-column"><input type="checkbox"');
+            html.push('"><td class="cwxip-check-column"><input type="checkbox" ');
             if (selected) {
-                // preselect already selected values
-                html.push(' checked');
+              html.push(' checked');
             }
             html.push('></td><td><a href="');
             html.push(context);
@@ -256,10 +335,13 @@ AJS.toInit(function() {
                     table$.append(AJS.$('<tr><td></td><td>' + message + '</td></tr>'));
                 }
             }
+             //AJS.$('#cwxip-check-column').on('click', test1());
+
         });
     }
 
     function popupApply(id) {
+       //console.log("++++++-----"+id);
         var existingData = AJS.$('#' + id).auiSelect2('data');
         var newData = AJS.$('#ics-issue-picker-popup td.cwxip-check-column > input:checked').map(function() {
             var row$ = AJS.$(this).parents('tr');
@@ -270,8 +352,7 @@ AJS.toInit(function() {
         AJS.$('#' + id).auiSelect2('data', _.union(existingData, newData));
         AJS.dialog2('#ics-issue-picker-popup').hide();
     }
-
     activateFields();
-    
+
     JIRA.bind(JIRA.Events.NEW_CONTENT_ADDED, activateFields);
 });

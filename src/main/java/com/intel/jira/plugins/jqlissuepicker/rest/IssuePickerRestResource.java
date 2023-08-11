@@ -12,31 +12,29 @@ import com.atlassian.jira.issue.fields.config.FieldConfig;
 import com.atlassian.jira.issue.fields.config.FieldConfigScheme;
 import com.atlassian.jira.issue.fields.config.manager.FieldConfigSchemeManager;
 import com.atlassian.jira.issue.fields.layout.field.FieldLayoutItem;
+import com.atlassian.jira.issue.link.IssueLinkType;
+import com.atlassian.jira.issue.link.IssueLinkTypeManager;
 import com.atlassian.jira.project.Project;
 import com.atlassian.jira.project.ProjectManager;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.user.ApplicationUser;
+import com.atlassian.jira.util.json.JSONArray;
+import com.atlassian.jira.util.json.JSONException;
+import com.atlassian.jira.util.json.JSONObject;
 import com.intel.jira.plugins.jqlissuepicker.customfields.IssuePickerVelocityProvider;
 import com.intel.jira.plugins.jqlissuepicker.ao.EntityService;
 import com.intel.jira.plugins.jqlissuepicker.ao.dto.IssuePickerConfig;
 import com.intel.jira.plugins.jqlissuepicker.customfields.IssuePickerCFType;
+import com.intel.jira.plugins.jqlissuepicker.data.LinkTypeConverter;
 import com.intel.jira.plugins.jqlissuepicker.servicedesk.ServiceDeskUtils;
 import com.intel.jira.plugins.jqlissuepicker.util.QueryUtil;
 import com.intel.jira.plugins.jqlissuepicker.util.TemplateUtils;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -63,8 +61,11 @@ public class IssuePickerRestResource {
     private final JiraAuthenticationContext jiraAuthenticationContext;
     private final EntityService entityService;
     private final IssuePickerVelocityProvider velocityProvider;
+    private final IssueLinkTypeManager issueLinkTypeManager ;
 
-    public IssuePickerRestResource(ServiceDeskUtils serviceDeskUtils, CustomFieldManager customFieldManager, IssueManager issueManager, FieldConfigSchemeManager fieldConfigSchemeManager, SearchService searchService, ProjectManager projectManager, JiraAuthenticationContext jiraAuthenticationContext, EntityService entityService, IssuePickerVelocityProvider velocityProvider) {
+
+
+    public IssuePickerRestResource(ServiceDeskUtils serviceDeskUtils, CustomFieldManager customFieldManager, IssueManager issueManager, FieldConfigSchemeManager fieldConfigSchemeManager, SearchService searchService, ProjectManager projectManager, JiraAuthenticationContext jiraAuthenticationContext, EntityService entityService, IssuePickerVelocityProvider velocityProvider,IssueLinkTypeManager issueLinkTypeManager) {
         this.serviceDeskUtils = serviceDeskUtils;
         this.customFieldManager = customFieldManager;
         this.issueManager = issueManager;
@@ -74,6 +75,7 @@ public class IssuePickerRestResource {
         this.jiraAuthenticationContext = jiraAuthenticationContext;
         this.entityService = entityService;
         this.velocityProvider = velocityProvider;
+        this.issueLinkTypeManager=issueLinkTypeManager;
     }
 
     @GET
@@ -139,6 +141,29 @@ public class IssuePickerRestResource {
             return Response.ok((Object)null).build();
         }
     }
+    @PUT
+    @Path("/savefieldConfigId")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response saveIssuePickerConfig(@QueryParam("linkType") String linkType,@QueryParam("cfConfigId") String cfConfigId) {
+        ApplicationUser user = this.jiraAuthenticationContext.getLoggedInUser();
+        LinkTypeConverter linkTypeConverter = new LinkTypeConverter(linkType);
+       /* CustomField customField = customFieldManager.getCustomFieldObject(10401L);
+        FieldConfig filedConfig= customField.getRelevantConfig(issueManager.getIssueObject("DFLOWCT-10"));
+        System.out.println(filedConfig.getId());*/
+        IssuePickerConfig config = entityService.loadIssuePickerConfig(org.apache.commons.lang3.math.NumberUtils.toLong(cfConfigId));
+
+         Long linkId=linkTypeConverter.getLinkTypeId();
+        if (StringUtils.isBlank(linkType)) {
+            return Response.status(Status.BAD_REQUEST).entity("Missing fieldConfigId ").build();
+        } else {
+            Long configId = org.apache.commons.lang3.math.NumberUtils.toLong(cfConfigId);
+            IssuePickerConfig newConfig = new IssuePickerConfig(configId, config.getSelectionMode(),"Summary", config.getShowIssueKey(), config.getCustomFormat(),config.getLinkMode(), linkTypeConverter.getLinkTypeId(), linkTypeConverter.isOutward(), config.getJql(), config.getJqlUser(), config.getMaxSearchResults(), config.getFieldsToCopy(), config.getSumUpFields(),config.getFieldsToInit(), config.getPresetValue(), config.getIndexTableFields(), config.getExpandIssueTable(), config.getCsvExportUseDisplay(), config.getCreateNewValue(),
+                    config.getNewIssueProject(), config.getCurrentProject(), config.getNewIssueType(), config.getInitFieldMapping(), config.getCopyFieldMapping());
+
+           entityService.saveIssuePickerConfig(configId, newConfig);
+            return Response.ok(newConfig).build();
+        }
+    }
 
     @GET
     @Path("/jsd-viewdata")
@@ -150,6 +175,73 @@ public class IssuePickerRestResource {
             MutableIssue issue = this.issueManager.getIssueObject(issueKey);
             Map<String, String> fieldNames = this.serviceDeskUtils.getIssuePickerFieldNames(user, issue);
             return Response.ok(new IssuePickerModel(this.getConfigurations(fieldNames, issue.getProjectId(), issue.getIssueTypeId(), issue, true, false))).build();
+        }
+    }
+    @GET
+    @Path("/viewIssueLinkTypes")
+    public Response getIssueLinkTypes(@QueryParam("issueId") Long issueId) throws JSONException {
+        Issue newIssue=null;
+        ApplicationUser user = this.jiraAuthenticationContext.getLoggedInUser();
+        newIssue = issueManager.getIssueObject(issueId);
+        String issueType=newIssue.getIssueType().getName();
+
+        Map<String, String> linkTypes = new LinkedHashMap();
+
+        if(issueType.equals("1Configuration")){
+
+            linkTypes.put("10220|true","includes(Include)");
+            linkTypes.put("10220|false","is included by(Include)");
+            linkTypes.put("10223|true","includes(Inclusion)");
+            linkTypes.put("10223|false","is included by(Inclusion)");
+
+        }
+        else if(issueType.equals("1Milestone")){
+
+            linkTypes.put("10227|true" ,"child of (Child Relation)");
+            linkTypes.put("10227|false" ,"has child (Child Relation)");
+            linkTypes.put("10241|true","depends on (Depends on)");
+            linkTypes.put("10241|false","dependent of (Depends on)");
+            linkTypes.put("10249|true","precedes (succeeds on)");
+            linkTypes.put("10249|false","succeeds (precedes on)");
+
+        }else {
+
+            Iterator var2 = issueLinkTypeManager.getIssueLinkTypes().iterator();
+
+            while(var2.hasNext()) {
+                IssueLinkType issueLinkType = (IssueLinkType)var2.next();
+                String outwardName = issueLinkType.getOutward() + " (" + issueLinkType.getName() + ")";
+                String inwardName = issueLinkType.getInward() + " (" + issueLinkType.getName() + ")";
+                linkTypes.put((new LinkTypeConverter(issueLinkType.getId(), true)).getLinkTypeString(), outwardName);
+                linkTypes.put((new LinkTypeConverter(issueLinkType.getId(), false)).getLinkTypeString(), inwardName);
+            }
+
+        }
+        System.out.println("link types......."+linkTypes);
+        JSONArray issueLinkTypesArray = new JSONArray();
+        for(Map.Entry<String,String> entry:linkTypes.entrySet()){
+            String linkTypeKey = entry.getKey();
+            String linkTypeName = entry.getValue();
+
+            String[] parts = linkTypeKey.split("\\|");
+            String linkTypeId = parts[0];
+            boolean isOutward = Boolean.parseBoolean(parts[1]);
+            JSONObject linkTypeObject = new JSONObject();
+            linkTypeObject.put("id", linkTypeId);
+            linkTypeObject.put("name", linkTypeName);
+            linkTypeObject.put("inward", isOutward ? linkTypeName : "");
+            linkTypeObject.put("outward", isOutward ? "" : linkTypeName);
+            linkTypeObject.put("self", "http://localhost:2990/jira/rest/api/2/issueLinkType/" + linkTypeId);
+
+            issueLinkTypesArray.put(linkTypeObject);
+        }
+        JSONObject response = new JSONObject();
+        response.put("issueLinkTypes", issueLinkTypesArray);
+
+        if (StringUtils.isBlank(issueType)) {
+            return Response.status(Status.BAD_REQUEST).entity("Missing issue type").build();
+        } else {
+            return Response.ok(response.toString()).build();
         }
     }
 
