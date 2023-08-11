@@ -215,10 +215,6 @@ AJS.toInit(function() {
       });
 
     }
-    function test1(){
-    console.log("helllllllllllllooooooooo");
-    }
-
     function createDropdown(issueLinkTypes) {
       var dropdown = document.getElementById("issueLinkTypesDropdown");
       //console.log("issue link types"+issueLinkTypes[0]);
@@ -313,13 +309,8 @@ AJS.toInit(function() {
             html.push('<tr data-id="');
             html.push(issue.key);
             html.push('"><td class="cwxip-check-column"><input type="checkbox" ');
-
-
             if (selected) {
-
               html.push(' checked');
-
-
             }
             html.push('></td><td><a href="');
             html.push(context);

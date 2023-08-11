@@ -185,7 +185,6 @@ public class IssuePickerRestResource {
         newIssue = issueManager.getIssueObject(issueId);
         String issueType=newIssue.getIssueType().getName();
 
-        //String issueType = String.valueOf(issueManager.getIssueObject(issueKey));
         Map<String, String> linkTypes = new LinkedHashMap();
 
         if(issueType.equals("1Configuration")){
@@ -227,7 +226,6 @@ public class IssuePickerRestResource {
             String[] parts = linkTypeKey.split("\\|");
             String linkTypeId = parts[0];
             boolean isOutward = Boolean.parseBoolean(parts[1]);
-
             JSONObject linkTypeObject = new JSONObject();
             linkTypeObject.put("id", linkTypeId);
             linkTypeObject.put("name", linkTypeName);
