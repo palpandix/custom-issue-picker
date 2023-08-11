@@ -18,6 +18,9 @@ import com.atlassian.jira.project.Project;
 import com.atlassian.jira.project.ProjectManager;
 import com.atlassian.jira.security.JiraAuthenticationContext;
 import com.atlassian.jira.user.ApplicationUser;
+import com.atlassian.jira.util.json.JSONArray;
+import com.atlassian.jira.util.json.JSONException;
+import com.atlassian.jira.util.json.JSONObject;
 import com.intel.jira.plugins.jqlissuepicker.customfields.IssuePickerVelocityProvider;
 import com.intel.jira.plugins.jqlissuepicker.ao.EntityService;
 import com.intel.jira.plugins.jqlissuepicker.ao.dto.IssuePickerConfig;
@@ -176,7 +179,7 @@ public class IssuePickerRestResource {
     }
     @GET
     @Path("/viewIssueLinkTypes")
-    public Response getIssueLinkTypes(@QueryParam("issueId") Long issueId) {
+    public Response getIssueLinkTypes(@QueryParam("issueId") Long issueId) throws JSONException {
         Issue newIssue=null;
         ApplicationUser user = this.jiraAuthenticationContext.getLoggedInUser();
         newIssue = issueManager.getIssueObject(issueId);
@@ -216,11 +219,31 @@ public class IssuePickerRestResource {
 
         }
         System.out.println("link types......."+linkTypes);
+        JSONArray issueLinkTypesArray = new JSONArray();
+        for(Map.Entry<String,String> entry:linkTypes.entrySet()){
+            String linkTypeKey = entry.getKey();
+            String linkTypeName = entry.getValue();
+
+            String[] parts = linkTypeKey.split("\\|");
+            String linkTypeId = parts[0];
+            boolean isOutward = Boolean.parseBoolean(parts[1]);
+
+            JSONObject linkTypeObject = new JSONObject();
+            linkTypeObject.put("id", linkTypeId);
+            linkTypeObject.put("name", linkTypeName);
+            linkTypeObject.put("inward", isOutward ? linkTypeName : "");
+            linkTypeObject.put("outward", isOutward ? "" : linkTypeName);
+            linkTypeObject.put("self", "http://localhost:2990/jira/rest/api/2/issueLinkType/" + linkTypeId);
+
+            issueLinkTypesArray.put(linkTypeObject);
+        }
+        JSONObject response = new JSONObject();
+        response.put("issueLinkTypes", issueLinkTypesArray);
 
         if (StringUtils.isBlank(issueType)) {
             return Response.status(Status.BAD_REQUEST).entity("Missing issue type").build();
         } else {
-            return Response.ok(linkTypes).build();
+            return Response.ok(response.toString()).build();
         }
     }
 

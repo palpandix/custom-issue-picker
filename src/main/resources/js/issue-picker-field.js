@@ -40,9 +40,17 @@ AJS.toInit(function() {
                           data: "",
                           dataType: "json",
                           success: function(msg){
-                           console.log(msg);
+                          /*var issueLinkTypes = [];
+                          var keys = Object.keys(msg);
+                          keys.forEach(function(key){
+                                  issueLinkTypes.push(msg[key]);
+                           });*/
+                          // return issueLinkTypes;
+                          // console.log(result);
                            createDropdown(msg.issueLinkTypes);
+                            //console.log("msg for issuelinktypes"+msg.issueLinkTypes);
                           }
+
                         });
 
         }
@@ -213,9 +221,9 @@ AJS.toInit(function() {
 
     function createDropdown(issueLinkTypes) {
       var dropdown = document.getElementById("issueLinkTypesDropdown");
-      console.log(issueLinkTypes[0]);
+      //console.log("issue link types"+issueLinkTypes[0]);
       for(var i=0;i<issueLinkTypes.length;i++){
-         console.log(issueLinkTypes[i]);
+        //console.log(issueLinkTypes[i]);
          var option1 = document.createElement("option");
          var option2 = document.createElement("option");
          option1.value = issueLinkTypes[i].id+'|'+'true';
